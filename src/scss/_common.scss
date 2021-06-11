@@ -1,0 +1,48 @@
+.title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.container {
+  margin: 0 auto;
+}
+
+.surface {
+  border-radius: $b-radius;
+}
+
+@for $i from 0 through 4 {
+  .elevation-#{$i} {
+    box-shadow: 0px $i * 1px $i * 1px #0000003a;
+  }
+}
+
+.full-view {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.primary {
+  --color: #{color("primary")};
+  --color-light: #{color("primary-light")};
+}
+.secondary {
+  --color: #{color("secondary")};
+  --color-light: #{color("secondary-light")};
+}
+.error {
+  --color: #{color("error")};
+  --color-light: #{color("error-light")};
+}
+.warning {
+  --color: #{color("warning")};
+  --color-light: #{color("warning-light")};
+}
+.info {
+  --color: #{color("info")};
+  --color-light: #{color("info-light")};
+}
+.success {
+  --color: #{color("success")};
+  --color-light: #{color("success-light")};
+}

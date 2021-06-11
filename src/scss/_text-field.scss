@@ -1,0 +1,71 @@
+.text-field {
+  position: relative;
+  border: 1px solid gray;
+  border-radius: $b-radius;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    border-color: black;
+  }
+
+  &--active {
+    border-color: color("primary") !important;
+  }
+
+  &--error {
+    border-color: color("error") !important;
+  }
+
+  &__label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+
+    transition: $transition;
+
+    pointer-events: none;
+
+    &--has-text {
+      top: 0px;
+      transform: translateY(-60%);
+      font-size: 0.8rem;
+      padding: 0 1px;
+    }
+
+    &--active {
+      color: color("primary");
+    }
+
+    &--error {
+      color: color("error");
+    }
+  }
+
+  &__input {
+    all: unset;
+    box-sizing: border-box;
+    padding: 1rem;
+    width: 100%;
+
+    &::-ms-reveal,
+    &::-ms-clear {
+      display: none;
+    }
+  }
+
+  &__icon {
+    padding: 0 1rem;
+    cursor: pointer;
+
+    &--active {
+      color: color("primary");
+    }
+
+    &--error {
+      color: color("error");
+    }
+  }
+}

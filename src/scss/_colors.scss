@@ -1,0 +1,18 @@
+$colors: (
+  "primary": #6200e8,
+  "primary-light": #6200e825,
+  "secondary": #474747,
+  "secondary-light": #47474725,
+  "error": #d10000,
+  "error-light": #d1000025,
+  "warning": #d4bf00,
+  "warning-light": #fffb0007,
+  "info": #007ab3,
+  "info-light": #007ab325,
+  "success": #009e28,
+  "success-light": #009e2825,
+);
+
+@function color($c) {
+  @return map-get($colors, $c);
+}

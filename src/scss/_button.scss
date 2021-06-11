@@ -1,0 +1,22 @@
+.text-button {
+  color: var(--color);
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: $transition;
+  border-radius: $b-radius;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-light);
+  }
+
+  &:active {
+    background-color: var(--color);
+    color: white;
+  }
+}
