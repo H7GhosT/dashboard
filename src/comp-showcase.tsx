@@ -22,9 +22,10 @@ export function CompShowcase() {
 
   return (
     <BrowserRouter>
-      <FullView style={{ background: "red" }}>
+      <FullView style={{ background: "#20a0b025" }}>
         <Container size="s">
-          <Surface elevation={4}>
+          <VSpace amount={3} />
+          <Surface elevation={4} style={{ background: "white" }}>
             <PaddingXY x={2} y={2}>
               <Title>Title</Title>
               <VSpace amount={1} />
@@ -39,6 +40,8 @@ export function CompShowcase() {
               <TextButton theme="warning">Button</TextButton>
               <HSpace amount={1} />
               <TextButton theme="success">Button</TextButton>
+              <HSpace amount={1} />
+              <TextButton disabled={true}>Button</TextButton>
               <VSpace amount={1} />
               <TextButton style={{ width: "100%" }}>Button</TextButton>
               <VSpace amount={1} />
