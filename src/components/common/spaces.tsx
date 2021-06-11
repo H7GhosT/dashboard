@@ -1,8 +1,15 @@
 import React from "react";
 
-import { IPaddingXYProps, ISpaceProps } from "./types";
+export interface SpaceProps extends React.HTMLAttributes<HTMLDivElement> {
+  amount: number;
+}
 
-export function VSpace({ amount, ...props }: ISpaceProps) {
+export interface PaddingXYProps extends React.HTMLAttributes<HTMLDivElement> {
+  x: number;
+  y: number;
+}
+
+export function VSpace({ amount, ...props }: SpaceProps) {
   // vertical space
   return (
     <div
@@ -14,7 +21,7 @@ export function VSpace({ amount, ...props }: ISpaceProps) {
   );
 }
 
-export function HSpace({ amount, ...props }: ISpaceProps) {
+export function HSpace({ amount, ...props }: SpaceProps) {
   // horizontal space
   return (
     <span
@@ -27,7 +34,7 @@ export function HSpace({ amount, ...props }: ISpaceProps) {
   );
 }
 
-export function PaddingXY({ x, y, ...props }: IPaddingXYProps) {
+export function PaddingXY({ x, y, ...props }: PaddingXYProps) {
   return (
     <div
       {...props}

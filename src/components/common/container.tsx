@@ -1,8 +1,13 @@
 import React from "react";
 
-import { ContainerSize, IContainerProps } from "./types";
 import { MapType } from "../types";
-import { addClsToProps } from "./utils";
+import { addClsToProps } from "../utils";
+
+export type ContainerSize = "s" | "m" | "l";
+
+export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  size: ContainerSize;
+}
 
 const containerSizeMap: MapType<ContainerSize, number> = {
   s: 500,
@@ -10,7 +15,7 @@ const containerSizeMap: MapType<ContainerSize, number> = {
   l: 1200,
 };
 
-export function Container({ size, ...props }: IContainerProps) {
+export function Container({ size, ...props }: ContainerProps) {
   return (
     <div
       {...addClsToProps(props, "container")}

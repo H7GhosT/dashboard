@@ -1,8 +1,12 @@
 import React from "react";
 
-import { IButtonProps } from "./types";
-import { addClsToProps } from "./utils";
+import { ComponentTheme } from "./types";
+import { addClsToProps } from "../utils";
 
-export function TextButton({ theme = "primary", ...props }: IButtonProps) {
+export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+  theme?: ComponentTheme;
+}
+
+export function TextButton({ theme = "primary", ...props }: ButtonProps) {
   return <button {...addClsToProps(props, "text-button", theme)}></button>;
 }

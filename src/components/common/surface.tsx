@@ -1,9 +1,12 @@
 import React from "react";
 
-import { ISurfaceProps } from "./types";
-import { addClsToProps } from "./utils";
+import { addClsToProps } from "../utils";
 
-export function Surface(props: ISurfaceProps) {
+export interface SurfaceProps extends React.HTMLAttributes<HTMLDivElement> {
+  elevation: number;
+}
+
+export function Surface(props: SurfaceProps) {
   return (
     <div
       {...addClsToProps(props, "surface elevation-" + props.elevation)}
