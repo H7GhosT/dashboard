@@ -187,6 +187,20 @@
       "email": "",
       "password": "asdfasdf",
       "permission": "user"
+    },
+    {
+      "id": "338109e0-cab8-11eb-b3bf-cf7a2e98cc55",
+      "name": "cool name",
+      "email": "cool email",
+      "password": "cool password",
+      "permission": "user"
+    },
+    {
+      "id": "0abfa900-cabb-11eb-b3bf-cf7a2e98cc55",
+      "name": "a",
+      "email": "a",
+      "password": "a",
+      "permission": "user"
     }
   ],
   "articles": [

@@ -5,8 +5,9 @@ import reportWebVitals from "./reportWebVitals";
 import "./scss/main.scss";
 
 import { CompShowcase } from "./comp-showcase";
+import { RegisterPage } from "./features/auth";
 
-ReactDOM.render(<CompShowcase />, document.getElementById("root"));
+ReactDOM.render(<RegisterPage />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
