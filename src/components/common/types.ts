@@ -7,3 +7,7 @@ export type ComponentTheme =
   | "warning"
   | "info"
   | "success";
+
+export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+  theme?: ComponentTheme;
+}

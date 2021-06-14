@@ -13,7 +13,7 @@
 
 @for $i from 0 through 4 {
   .elevation-#{$i} {
-    box-shadow: 0px $i * 1px $i * 1px #0000003a;
+    box-shadow: 0px $i * 1px ($i + 1) * 1px color("shadow");
   }
 }
 

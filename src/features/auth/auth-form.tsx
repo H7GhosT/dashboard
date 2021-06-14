@@ -20,6 +20,7 @@ import {
   UserValidators,
 } from "./utils";
 import { insertBetween } from "../../utils";
+import { FilledButton } from "../../components/common/filled-button";
 
 export interface AuthFormProps {
   title: string;
@@ -136,9 +137,9 @@ export function AuthForm({
                   alignItems: "center",
                 }}
               >
-                <TextButton type="submit" disabled={isLoading}>
+                <FilledButton type="submit" disabled={isLoading}>
                   Submit
-                </TextButton>
+                </FilledButton>
                 {link}
               </div>
               <VSpace amount={1} />

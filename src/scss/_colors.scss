@@ -1,6 +1,6 @@
 $colors: (
   "primary": #6200e8,
-  "primary-light": #6200e825,
+  "primary-light": #dcc4ff,
   "secondary": #474747,
   "secondary-light": #47474725,
   "error": #d10000,
@@ -11,6 +11,7 @@ $colors: (
   "info-light": #007ab325,
   "success": #009e28,
   "success-light": #009e2825,
+  "shadow": #0000003a,
 );
 
 @function color($c) {

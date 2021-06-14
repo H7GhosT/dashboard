@@ -8,13 +8,14 @@ import {
   Surface,
   VSpace,
   HSpace,
+  PaddingXY,
   FullView,
   Alert,
   TextButton,
 } from "./components/common";
 
 import { BrowserRouter, Link } from "react-router-dom";
-import { PaddingXY } from "./components/common/spaces";
+import { FilledButton } from "./components/common/filled-button";
 
 export function CompShowcase() {
   const [inpValue, setInpValue] = useState("default");
@@ -31,6 +32,12 @@ export function CompShowcase() {
               <VSpace amount={1} />
               <TextButton>Button</TextButton>
               <HSpace amount={1} />
+              <TextButton>
+                Button
+                <HSpace amount={1} />
+                <Icon>logout</Icon>
+              </TextButton>
+              <HSpace amount={1} />
               <TextButton theme="secondary">Button</TextButton>
               <HSpace amount={1} />
               <TextButton theme="error">Button</TextButton>
@@ -44,6 +51,26 @@ export function CompShowcase() {
               <TextButton disabled={true}>Button</TextButton>
               <VSpace amount={1} />
               <TextButton style={{ width: "100%" }}>Button</TextButton>
+              <VSpace amount={1} />
+              <FilledButton>Button</FilledButton>
+              <HSpace amount={1} />
+              <FilledButton>
+                Button
+                <HSpace amount={1} />
+                <Icon>logout</Icon>
+              </FilledButton>
+              <HSpace amount={1} />
+              <FilledButton theme="secondary">Button</FilledButton>
+              <HSpace amount={1} />
+              <FilledButton theme="error">Button</FilledButton>
+              <HSpace amount={1} />
+              <FilledButton theme="info">Button</FilledButton>
+              <HSpace amount={1} />
+              <FilledButton theme="warning">Button</FilledButton>
+              <HSpace amount={1} />
+              <FilledButton theme="success">Button</FilledButton>
+              <HSpace amount={1} />
+              <FilledButton disabled={true}>Button</FilledButton>
               <VSpace amount={1} />
               <TextField
                 type="text"
