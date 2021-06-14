@@ -1,7 +1,13 @@
 import { v1 as uuidv1 } from "uuid";
 
 import { SERVER_URL } from "./config";
-import { FormUser } from "../types/user";
+import { FormUser, User } from "../types/user";
+
+export async function emailExists(email: string) {
+  const response = await fetch(SERVER_URL + "/users");
+  const users: User[] = await response.json();
+  return !!users.find((u) => u.email === email);
+}
 
 export function registerUser({ name, email, password }: FormUser) {
   return fetch(SERVER_URL + "/users", {
@@ -17,4 +23,10 @@ export function registerUser({ name, email, password }: FormUser) {
       "Content-Type": "application/json",
     },
   });
+}
+
+export async function getUserByEmail(email: string) {
+  const response = await fetch(SERVER_URL + "/users?email=" + email);
+  const users: User[] = await response.json();
+  return users.length ? users[0] : null;
 }
