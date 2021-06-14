@@ -7,7 +7,7 @@ import "./scss/main.scss";
 import { App } from "./app";
 import { CompShowcase } from "./comp-showcase";
 
-ReactDOM.render(<CompShowcase />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

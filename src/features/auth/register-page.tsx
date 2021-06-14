@@ -26,7 +26,11 @@ export function RegisterPage() {
       link={<Link to="/login">Login</Link>}
       validators={{
         name: [createEmptyValidator("Name")],
-        email: [emailValidator, emailExistsValidator],
+        email: [
+          createEmptyValidator("Email"),
+          emailValidator,
+          emailExistsValidator,
+        ],
         password: [passwordValidator],
       }}
     ></AuthForm>

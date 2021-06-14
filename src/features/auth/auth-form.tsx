@@ -60,6 +60,7 @@ export function AuthForm({
   const { mutate, isLoading } = useMutation(
     async (user: FormUser) => {
       user = trimUser(user);
+      setUser(user);
       const validation = await validateUser(user, validators);
       setValidation(validation);
 
@@ -87,7 +88,7 @@ export function AuthForm({
           <PaddingXY x={4} y={2}>
             <form onSubmit={onSubmit}>
               <Title>{title}</Title>
-              <VSpace amount={2} />
+              <VSpace amount={1} />
               {fields.includes("name") ? (
                 <>
                   <TextField

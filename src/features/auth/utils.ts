@@ -62,8 +62,7 @@ export async function validateUser(
   for await (const f of fields) {
     if (user[f] !== undefined && validators[f] !== undefined) {
       let v;
-      v = validateWith(user[f]!, validators[f]!);
-      if (v instanceof Promise) v = await v;
+      v = await validateWith(user[f]!, validators[f]!);
       if (v) result.errors.push(v);
       if (v) result.hasError[f] = true;
     }
@@ -78,6 +77,6 @@ export function trimUser(user: FormUser) {
   return {
     name: user.name?.trim(),
     email: user.email?.trim(),
-    password: user.password?.trim(),
+    password: user.password,
   };
 }
