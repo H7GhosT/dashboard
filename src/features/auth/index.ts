@@ -1,2 +1,2 @@
-export { LoginPage } from "./login-page";
-export { RegisterPage } from "./register-page";
+export { LoginPage } from "./pages/LoginPage";
+export { RegisterPage } from "./pages/RegisterPage";

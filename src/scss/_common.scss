@@ -9,6 +9,7 @@
 
 .surface {
   border-radius: $b-radius;
+  background-color: white;
 }
 
 @for $i from 0 through 4 {

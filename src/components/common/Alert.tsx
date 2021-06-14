@@ -1,15 +1,15 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 import { ComponentTheme } from "./types";
-import { MapType } from "../types";
-import { Icon } from "./icon";
-import { HSpace } from "./spaces";
+import { MapType } from "components/utils";
+import { Icon } from "./Icon";
+import { HSpace } from "./Spaces";
 
 export type AlertSeverity = Exclude<ComponentTheme, "primary" | "secondary">;
 
 export interface AlertProps {
   severity: AlertSeverity;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const alertIconNameMap: MapType<AlertSeverity, string> = {

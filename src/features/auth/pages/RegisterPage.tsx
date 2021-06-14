@@ -1,16 +1,16 @@
-import React, { FormEvent, useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { AuthForm } from "./auth-form";
+import { AuthForm } from "../AuthForm";
 import {
   createEmptyValidator,
   emailExistsValidator,
   emailValidator,
   passwordValidator,
-} from "./utils";
-import { registerUser } from "../../api/users";
-import { FormUser, User } from "../../types/user";
-import { UserContext } from "../../user-context";
+} from "../utils";
+import { registerUser } from "api/users";
+import { FormUser, User } from "types/user";
+import { UserContext } from "contexts/UserContext";
 
 export function RegisterPage() {
   const { loginUser } = useContext(UserContext);
@@ -18,7 +18,7 @@ export function RegisterPage() {
     <AuthForm
       title="Register"
       fields={["name", "email", "password"]}
-      submitHandler={async (user: FormUser) => {
+      onSubmit={async (user: FormUser) => {
         const response = await registerUser(user);
         const u: User = await response.json();
         loginUser(u);

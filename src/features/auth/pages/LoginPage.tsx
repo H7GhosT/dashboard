@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { AuthForm } from "./auth-form";
-import { createEmptyValidator } from "./utils";
-import { getUserByEmail } from "../../api/users";
-import { UserContext } from "../../user-context";
+import { AuthForm } from "../AuthForm";
+import { createEmptyValidator } from "../utils";
+import { getUserByEmail } from "api/users";
+import { UserContext } from "contexts/UserContext";
 
 export function LoginPage() {
   const { loginUser } = useContext(UserContext);
@@ -15,7 +15,7 @@ export function LoginPage() {
       title="Login"
       fields={["email", "password"]}
       link={<Link to="/register">Register</Link>}
-      submitHandler={async (user) => {
+      onSubmit={async (user) => {
         const candidate = await getUserByEmail(user.email!);
         if (!candidate) {
           setErrors(["User does not exist"]);

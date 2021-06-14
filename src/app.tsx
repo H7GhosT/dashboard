@@ -2,8 +2,8 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 
-import { PageSwitch } from "./features/page-switch";
-import { UserContextProvider } from "./user-context";
+import { PageSwitch } from "features/PageSwitch";
+import { UserContextProvider } from "contexts/UserContext";
 
 const client = new QueryClient();
 

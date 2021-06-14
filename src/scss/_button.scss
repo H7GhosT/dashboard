@@ -29,6 +29,9 @@
   &:disabled {
     cursor: not-allowed;
     color: var(--color-light);
+    &:hover {
+      color: white;
+    }
   }
 }
 

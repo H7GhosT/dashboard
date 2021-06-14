@@ -1,4 +1,4 @@
-import React, { FormEvent, ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { useMutation } from "react-query";
 
 import {
@@ -7,25 +7,24 @@ import {
   FullView,
   Icon,
   Surface,
-  TextButton,
   Title,
-} from "../../components/common";
-import { PaddingXY, VSpace } from "../../components/common/spaces";
-import { PasswordTextField, TextField } from "../../components/text-field";
-import { FormUser } from "../../types/user";
+  FilledButton,
+} from "components/common";
+import { PaddingXY, VSpace } from "components/common";
+import { PasswordTextField, TextField } from "components/text-field";
+import { FormUser } from "types/user";
 import {
   trimUser,
   validateUser,
   UserValidationResult,
   UserValidators,
 } from "./utils";
-import { insertBetween } from "../../utils";
-import { FilledButton } from "../../components/common/filled-button";
+import { insertBetween } from "utils";
 
 export interface AuthFormProps {
   title: string;
   fields: (keyof FormUser)[];
-  submitHandler: (user: FormUser) => Promise<any>;
+  onSubmit: (user: FormUser) => Promise<any>;
   link: ReactNode;
   validators: UserValidators;
   otherErrors?: string[];
@@ -34,7 +33,7 @@ export interface AuthFormProps {
 export function AuthForm({
   title,
   fields,
-  submitHandler,
+  onSubmit,
   link,
   validators,
   otherErrors = [],
@@ -65,7 +64,7 @@ export function AuthForm({
       setValidation(validation);
 
       if (validation.isValid) {
-        await submitHandler(user);
+        await onSubmit(user);
       }
     },
     {
@@ -75,18 +74,18 @@ export function AuthForm({
     }
   );
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    mutate(user);
-  };
-
   return (
     <FullView>
       <VSpace amount={10} />
       <Container size="s">
         <Surface elevation={4}>
           <PaddingXY x={4} y={2}>
-            <form onSubmit={onSubmit}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                mutate(user);
+              }}
+            >
               <Title>{title}</Title>
               <VSpace amount={1} />
               {fields.includes("name") ? (
@@ -94,7 +93,7 @@ export function AuthForm({
                   <TextField
                     label="Name"
                     value={user.name}
-                    inputHandler={(v) => changeUser("name", v)}
+                    onInput={(v) => changeUser("name", v)}
                     icon={<Icon>person</Icon>}
                     error={validation.hasError.name}
                   />
@@ -108,7 +107,7 @@ export function AuthForm({
                   <TextField
                     label="Email"
                     value={user.email}
-                    inputHandler={(v) => changeUser("email", v)}
+                    onInput={(v) => changeUser("email", v)}
                     icon={<Icon>mail</Icon>}
                     error={validation.hasError.email}
                   />
@@ -122,7 +121,7 @@ export function AuthForm({
                   <PasswordTextField
                     label="Password"
                     value={user.password}
-                    inputHandler={(v) => changeUser("password", v)}
+                    onInput={(v) => changeUser("password", v)}
                     error={validation.hasError.password}
                   />
                   <VSpace amount={1} />

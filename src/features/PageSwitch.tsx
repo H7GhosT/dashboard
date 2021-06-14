@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import { UserContext } from "../user-context";
 import { RegisterPage, LoginPage } from "./auth";
-import { Icon } from "../components/common/icon";
-import { TextButton } from "../components/common/text-button";
+import { Icon, TextButton } from "components/common";
+import { UserContext } from "contexts/UserContext";
 
 export function PageSwitch() {
   const { user, logout } = useContext(UserContext);
@@ -18,9 +17,7 @@ export function PageSwitch() {
             <Icon onClick={logout}>logout</Icon>
           </TextButton>
         </Route>
-        <Route path="*">
-          <Redirect to="/admin" />
-        </Route>
+        <Redirect to="/admin" />
       </Switch>
     ) : (
       <Switch>
@@ -41,9 +38,7 @@ export function PageSwitch() {
       <Route path="/login">
         <LoginPage />
       </Route>
-      <Route path="*">
-        <Redirect to="/register" />
-      </Route>
+      <Redirect to="/register" />
     </Switch>
   );
 }

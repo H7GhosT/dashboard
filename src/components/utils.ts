@@ -21,3 +21,5 @@ export function addClsToProps(
     className: [props.className || "", ...classNames].join(" "),
   };
 }
+
+export type MapType<T extends string | number | symbol, B> = { [key in T]: B };

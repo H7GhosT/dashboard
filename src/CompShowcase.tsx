@@ -12,14 +12,16 @@ import {
   FullView,
   Alert,
   TextButton,
+  FilledButton,
 } from "./components/common";
 
 import { BrowserRouter, Link } from "react-router-dom";
-import { FilledButton } from "./components/common/filled-button";
+import { Modal } from "./components/modal/modal";
 
 export function CompShowcase() {
   const [inpValue, setInpValue] = useState("default");
   const [pass, setPass] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <BrowserRouter>
@@ -76,7 +78,7 @@ export function CompShowcase() {
                 type="text"
                 label="Your name"
                 value={inpValue}
-                inputHandler={(v) => setInpValue(v)}
+                onInput={(v) => setInpValue(v)}
                 icon={<Icon>person_outline</Icon>}
               />
               <div>{inpValue}</div>
@@ -85,7 +87,7 @@ export function CompShowcase() {
                 label="Password"
                 value={pass}
                 placeholder="Your password"
-                inputHandler={setPass}
+                onInput={setPass}
               />
               <div>{pass}</div>
               <VSpace amount={1} />
@@ -93,7 +95,7 @@ export function CompShowcase() {
                 type="text"
                 label="Your name"
                 value={inpValue}
-                inputHandler={(v) => setInpValue(v)}
+                onInput={(v) => setInpValue(v)}
                 icon={<Icon>person_outline</Icon>}
                 error
               />
@@ -102,7 +104,7 @@ export function CompShowcase() {
                 label="Password"
                 value={pass}
                 placeholder="Your password"
-                inputHandler={setPass}
+                onInput={setPass}
                 error
               />
               <VSpace amount={1} />
@@ -137,6 +139,17 @@ export function CompShowcase() {
                 quidem earum laboriosam voluptatum qui natus tempora at repellat
                 odio vel commodi doloremque, ipsam aut dolor!
               </Alert>
+              <FilledButton onClick={() => setModalOpen(true)}>
+                Open modal
+              </FilledButton>
+              <Modal
+                open={modalOpen}
+                onClose={() => {
+                  setModalOpen(false);
+                }}
+              >
+                something
+              </Modal>
             </PaddingXY>
           </Surface>
         </Container>

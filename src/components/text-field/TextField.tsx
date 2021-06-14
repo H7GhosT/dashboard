@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-import { composeClass } from "../utils";
+import { composeClass } from "components/utils";
 import { ITextFieldProps } from "./types";
 
 export function TextField({
@@ -9,7 +9,7 @@ export function TextField({
   icon = <></>,
   type = "text",
   placeholder = "",
-  inputHandler = () => {},
+  onInput = () => {},
   onIconClick = () => {},
   error = false,
 }: ITextFieldProps) {
@@ -35,7 +35,7 @@ export function TextField({
         type={type}
         value={value}
         placeholder={placeholder}
-        onInput={() => inputHandler(inpRef.current.value)}
+        onInput={() => onInput(inpRef.current.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />

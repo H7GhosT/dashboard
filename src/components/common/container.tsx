@@ -1,7 +1,6 @@
 import React from "react";
 
-import { MapType } from "../types";
-import { addClsToProps } from "../utils";
+import { MapType, addClsToProps } from "components/utils";
 
 export type ContainerSize = "s" | "m" | "l";
 

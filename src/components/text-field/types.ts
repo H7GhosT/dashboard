@@ -5,7 +5,7 @@ export interface ITextFieldProps {
   value?: string;
   placeholder?: string;
   type?: string;
-  inputHandler?: (value: string) => void;
+  onInput?: (value: string) => void;
   icon?: React.ReactNode;
   onIconClick?: React.MouseEventHandler;
   error?: boolean;

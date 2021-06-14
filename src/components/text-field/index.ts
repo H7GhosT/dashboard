@@ -1,3 +1,3 @@
-export { TextField } from "./text-field";
-export { PasswordTextField } from "./password-text-field";
+export { TextField } from "./TextField";
+export { PasswordTextField } from "./PasswordTextField";
 export type { ITextFieldProps } from "./types";

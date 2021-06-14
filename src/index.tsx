@@ -4,8 +4,8 @@ import reportWebVitals from "./reportWebVitals";
 
 import "./scss/main.scss";
 
-import { App } from "./app";
-import { CompShowcase } from "./comp-showcase";
+import { App } from "App";
+import { CompShowcase } from "./CompShowcase";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

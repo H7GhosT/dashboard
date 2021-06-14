@@ -97,6 +97,20 @@
       "email": "Tania_Wyman12@hotmail.com",
       "password": "ylO5qTTBoaWTgE1",
       "permission": "admin"
+    },
+    {
+      "id": "096d1de0-cd17-11eb-adfe-5dfd670aea47",
+      "name": "New User account",
+      "email": "newuser@user.user",
+      "password": "asdf12345678",
+      "permission": "user"
+    },
+    {
+      "id": "ce67b1e0-cd1d-11eb-9e7a-f3a279e102eb",
+      "name": "jhgkj",
+      "email": "newuser@user.userh",
+      "password": "12345678",
+      "permission": "user"
     }
   ],
   "articles": [

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import { ITextFieldProps } from "./types";
-import { TextField } from "./text-field";
-import { Icon } from "../common/icon";
+import { TextField } from "./TextField";
+import { Icon } from "components/common";
 
 export function PasswordTextField(
   props: Exclude<ITextFieldProps, "icon" | "onIconClick" | "type">

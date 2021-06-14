@@ -1,5 +1,5 @@
-import { emailExists } from "../../api/users";
-import { FormUser } from "./../../types/user";
+import { emailExists } from "api/users";
+import { FormUser } from "types/user";
 
 export type Validator =
   | ((s: string) => string | null)
