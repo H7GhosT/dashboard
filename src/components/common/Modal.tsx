@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 
 import { composeClass } from "components/utils";
 import { Surface } from "components/common";
@@ -18,17 +18,18 @@ export function Modal({
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(document.createElement("div"));
 
-  if (Modal.openedModals.size) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "initial";
-  }
-
-  if (open) {
-    Modal.openedModals.add(modalRef);
-  } else {
-    Modal.openedModals.delete(modalRef);
-  }
+  useEffect(() => {
+    if (open) {
+      Modal.openedModals.add(modalRef);
+    } else {
+      Modal.openedModals.delete(modalRef);
+    }
+    if (Modal.openedModals.size) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "initial";
+    }
+  }, [open]);
 
   return (
     <div

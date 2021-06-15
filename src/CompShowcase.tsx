@@ -24,7 +24,7 @@ export function CompShowcase() {
 
   return (
     <BrowserRouter>
-      <div className="full-view flex" style={{ background: "#20a0b025" }}>
+      <div className="full-vh flex" style={{ background: "#20a0b025" }}>
         <div className="side-bar">
           <Container size={300} fixed>
             <VSpace amount={10} />

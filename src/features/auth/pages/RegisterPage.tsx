@@ -9,7 +9,7 @@ import {
   passwordValidator,
 } from "../utils";
 import { registerUser } from "api/users";
-import { FormUser, User } from "types/user";
+import { FormUser, User } from "types";
 import { UserContext } from "contexts/UserContext";
 
 export function RegisterPage() {
@@ -19,8 +19,7 @@ export function RegisterPage() {
       title="Register"
       fields={["name", "email", "password"]}
       onSubmit={async (user: FormUser) => {
-        const response = await registerUser(user);
-        const u: User = await response.json();
+        const u: User = await registerUser(user);
         loginUser(u);
       }}
       link={<Link to="/login">Login</Link>}

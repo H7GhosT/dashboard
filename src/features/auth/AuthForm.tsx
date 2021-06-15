@@ -11,7 +11,7 @@ import {
   Button,
 } from "components/common";
 import { PasswordTextField, TextField } from "components/text-field";
-import { FormUser } from "types/user";
+import { FormUser } from "types";
 import {
   trimUser,
   validateUser,
@@ -74,7 +74,7 @@ export function AuthForm({
   );
 
   return (
-    <div className="full-view">
+    <>
       <VSpace amount={10} />
       <Container size="s">
         <Surface elevation={4}>
@@ -146,6 +146,6 @@ export function AuthForm({
           </PaddingXY>
         </Surface>
       </Container>
-    </div>
+    </>
   );
 }

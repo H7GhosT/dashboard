@@ -11,7 +11,7 @@ const data = {
       id: "top-admin",
       name: "daniel",
       password: "1234",
-      email: "top-admin@fake.fake",
+      email: "top-admin@email.com",
       permission: "admin",
     },
   ],
@@ -41,10 +41,10 @@ function pick(arr) {
 for (let i = 0; i < articleCnt; i++) {
   data.articles.push({
     id: faker.datatype.uuid(),
-    "author-id": pick(data.users).id,
+    authorId: pick(data.users).id,
     title: faker.lorem.words(5),
-    content: faker.lorem.paragraphs(2, "\n-----\n"),
-    "date-created": faker.datatype.datetime(),
+    content: faker.lorem.paragraphs(3, "\n-----\n"),
+    dateCreated: faker.datatype.datetime(),
   });
 }
 

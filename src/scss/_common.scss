@@ -18,8 +18,7 @@
   }
 }
 
-.full-view {
-  width: 100vw;
+.full-vh {
   min-height: 100vh;
 }
 
@@ -56,8 +55,16 @@
   box-shadow: 0px 2px 4px color("shadow");
 }
 
+.w-100 {
+  width: 100%;
+}
+
 .flex {
   display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .align-center {
@@ -66,4 +73,20 @@
 
 .space-between {
   justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
+.text-gray {
+  color: gray;
 }
