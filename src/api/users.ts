@@ -25,8 +25,8 @@ export function registerUser({ name, email, password }: FormUser) {
   });
 }
 
-export async function getUserByEmail(email: string) {
-  const response = await fetch(SERVER_URL + "/users?email=" + email);
+export async function getUserBy(what: string, value: string) {
+  const response = await fetch(SERVER_URL + "/users?" + what + "=" + value);
   const users: User[] = await response.json();
   return users.length ? users[0] : null;
 }

@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode, useState } from "react";
+import { getUserBy } from "api/users";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 
 import { User } from "types/user";
 
@@ -25,10 +26,20 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     ...userContextDefault,
     loginUser: (user: User) => {
       setState((state) => ({ ...state, user }));
+      localStorage.setItem("logged-user", user.id);
     },
     logout: () => {
       setState((state) => ({ ...state, user: null }));
+      localStorage.removeItem("logged-user");
     },
   });
+  useEffect(() => {
+    (async () => {
+      const loggedUserId = localStorage.getItem("logged-user") || "";
+      const user: User | null = await getUserBy("id", loggedUserId);
+      if (user) state.loginUser(user);
+    })();
+  }, []);
+
   return <UserContext.Provider value={state}>{children}</UserContext.Provider>;
 }

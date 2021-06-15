@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { AuthForm } from "../AuthForm";
 import { createEmptyValidator } from "../utils";
-import { getUserByEmail } from "api/users";
+import { getUserBy } from "api/users";
 import { UserContext } from "contexts/UserContext";
 
 export function LoginPage() {
@@ -16,7 +16,7 @@ export function LoginPage() {
       fields={["email", "password"]}
       link={<Link to="/register">Register</Link>}
       onSubmit={async (user) => {
-        const candidate = await getUserByEmail(user.email!);
+        const candidate = await getUserBy("email", user.email!);
         if (!candidate) {
           setErrors(["User does not exist"]);
           return;
