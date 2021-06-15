@@ -5,5 +5,5 @@ export { Surface } from "./Surface";
 export { PaddingXY, VSpace, HSpace } from "./Spaces";
 export { FullView } from "./FullView";
 export { Alert } from "./Alert";
-export { TextButton } from "./TextButton";
-export { FilledButton } from "./FilledButton";
+export { Button } from "./Button";
+export { Modal } from "./Modal";

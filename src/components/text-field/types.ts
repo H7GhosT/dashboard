@@ -10,4 +10,6 @@ export interface ITextFieldProps {
   onIconClick?: React.MouseEventHandler;
   error?: boolean;
   helperText?: React.ReactNode;
+  variant?: "outlined" | "underlined";
+  multiline?: boolean;
 }

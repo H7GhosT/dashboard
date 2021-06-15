@@ -8,9 +8,10 @@ import {
   Icon,
   Surface,
   Title,
-  FilledButton,
+  PaddingXY,
+  VSpace,
+  Button,
 } from "components/common";
-import { PaddingXY, VSpace } from "components/common";
 import { PasswordTextField, TextField } from "components/text-field";
 import { FormUser } from "types/user";
 import {
@@ -137,9 +138,9 @@ export function AuthForm({
                   alignItems: "center",
                 }}
               >
-                <FilledButton type="submit" disabled={isLoading}>
+                <Button type="submit" disabled={isLoading}>
                   Submit
-                </FilledButton>
+                </Button>
                 {link}
               </div>
               <VSpace amount={1} />

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import { RegisterPage, LoginPage } from "./auth";
-import { Icon, TextButton } from "components/common";
+import { Icon, Button } from "components/common";
 import { UserContext } from "contexts/UserContext";
 
 export function PageSwitch() {
@@ -13,9 +13,9 @@ export function PageSwitch() {
       <Switch>
         <Route path="/admin">
           Admin page{" "}
-          <TextButton>
+          <Button variant="text">
             <Icon onClick={logout}>logout</Icon>
-          </TextButton>
+          </Button>
         </Route>
         <Redirect to="/admin" />
       </Switch>
@@ -23,9 +23,9 @@ export function PageSwitch() {
       <Switch>
         <Route path="/dashboard">
           Dashboard
-          <TextButton>
+          <Button variant="text">
             <Icon onClick={logout}>logout</Icon>
-          </TextButton>
+          </Button>
         </Route>
         <Redirect to="/dashboard" />
       </Switch>

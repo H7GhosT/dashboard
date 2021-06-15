@@ -13,7 +13,7 @@ export function PasswordTextField(
       {...props}
       type={visible ? "text" : "password"}
       icon={visible ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
-      onIconClick={() => setVisible(!visible)}
+      onIconClick={() => setVisible((v) => !v)}
     />
   );
 }

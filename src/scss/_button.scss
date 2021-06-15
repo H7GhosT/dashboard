@@ -1,4 +1,7 @@
 @mixin button-base {
+}
+
+.button {
   padding: 0.5rem 1rem;
   text-transform: uppercase;
   font-weight: bold;
@@ -10,52 +13,51 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
 
-.text-button {
-  color: var(--color);
-  background-color: transparent;
-  @include button-base();
+  &--text {
+    color: var(--color);
+    background-color: transparent;
 
-  &:hover,
-  &:focus {
-    background-color: var(--color-light);
-  }
+    &:hover,
+    &:focus {
+      background-color: var(--color-light);
+    }
 
-  &:active {
-    box-shadow: 0px 1px 3px color("shadow");
-  }
+    &:active {
+      box-shadow: 0px 1px 3px color("shadow");
+    }
 
-  &:disabled {
-    cursor: not-allowed;
-    color: var(--color-light);
-    &:hover {
-      color: white;
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--color-light);
+      &:hover {
+        color: white;
+      }
     }
   }
-}
 
-.filled-button {
-  color: white;
-  background-color: var(--color);
-  @include button-base();
+  &--filled {
+    color: white;
+    background-color: var(--color);
+    @include button-base();
 
-  &:hover,
-  &:focus {
-    color: var(--color);
-    background-color: var(--color-light);
-  }
+    &:hover,
+    &:focus {
+      color: var(--color);
+      background-color: var(--color-light);
+    }
 
-  &:active {
-    box-shadow: 0px 1px 3px color("shadow");
-  }
+    &:active {
+      box-shadow: 0px 1px 3px color("shadow");
+    }
 
-  &:disabled {
-    cursor: not-allowed;
-    color: var(--color-light);
+    &:disabled {
+      cursor: not-allowed;
+      color: var(--color-light);
 
-    &:hover {
-      color: white;
+      &:hover {
+        color: white;
+      }
     }
   }
 }

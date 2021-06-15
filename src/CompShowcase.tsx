@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { TextField, PasswordTextField } from "./components/text-field";
+import { BrowserRouter, Link } from "react-router-dom";
 
+import { TextField, PasswordTextField } from "./components/text-field";
 import {
   Container,
   Icon,
@@ -11,12 +12,9 @@ import {
   PaddingXY,
   FullView,
   Alert,
-  TextButton,
-  FilledButton,
+  Button,
+  Modal,
 } from "./components/common";
-
-import { BrowserRouter, Link } from "react-router-dom";
-import { Modal } from "./components/modal/modal";
 
 export function CompShowcase() {
   const [inpValue, setInpValue] = useState("default");
@@ -32,47 +30,61 @@ export function CompShowcase() {
             <PaddingXY x={2} y={2}>
               <Title>Title</Title>
               <VSpace amount={1} />
-              <TextButton>Button</TextButton>
+              <Button variant="text">Button</Button>
               <HSpace amount={1} />
-              <TextButton>
+              <Button variant="text">
                 Button
                 <HSpace amount={1} />
                 <Icon>logout</Icon>
-              </TextButton>
+              </Button>
               <HSpace amount={1} />
-              <TextButton theme="secondary">Button</TextButton>
+              <Button variant="text" theme="secondary">
+                Button
+              </Button>
               <HSpace amount={1} />
-              <TextButton theme="error">Button</TextButton>
+              <Button variant="text" theme="error">
+                Button
+              </Button>
               <HSpace amount={1} />
-              <TextButton theme="info">Button</TextButton>
+              <Button variant="text" theme="info">
+                Button
+              </Button>
               <HSpace amount={1} />
-              <TextButton theme="warning">Button</TextButton>
+              <Button variant="text" theme="warning">
+                Button
+              </Button>
               <HSpace amount={1} />
-              <TextButton theme="success">Button</TextButton>
+              <Button variant="text" theme="success">
+                Button
+              </Button>
               <HSpace amount={1} />
-              <TextButton disabled={true}>Button</TextButton>
+              <Button variant="text" disabled={true}>
+                Button
+              </Button>
               <VSpace amount={1} />
-              <TextButton style={{ width: "100%" }}>Button</TextButton>
+              <Button variant="text" style={{ width: "100%" }}>
+                Button
+              </Button>
               <VSpace amount={1} />
-              <FilledButton>Button</FilledButton>
+              <Button>Button</Button>
               <HSpace amount={1} />
-              <FilledButton>
+              <Button>
                 Button
                 <HSpace amount={1} />
                 <Icon>logout</Icon>
-              </FilledButton>
+              </Button>
               <HSpace amount={1} />
-              <FilledButton theme="secondary">Button</FilledButton>
+              <Button theme="secondary">Button</Button>
               <HSpace amount={1} />
-              <FilledButton theme="error">Button</FilledButton>
+              <Button theme="error">Button</Button>
               <HSpace amount={1} />
-              <FilledButton theme="info">Button</FilledButton>
+              <Button theme="info">Button</Button>
               <HSpace amount={1} />
-              <FilledButton theme="warning">Button</FilledButton>
+              <Button theme="warning">Button</Button>
               <HSpace amount={1} />
-              <FilledButton theme="success">Button</FilledButton>
+              <Button theme="success">Button</Button>
               <HSpace amount={1} />
-              <FilledButton disabled={true}>Button</FilledButton>
+              <Button disabled={true}>Button</Button>
               <VSpace amount={1} />
               <TextField
                 type="text"
@@ -80,6 +92,7 @@ export function CompShowcase() {
                 value={inpValue}
                 onInput={(v) => setInpValue(v)}
                 icon={<Icon>person_outline</Icon>}
+                variant="outlined"
               />
               <div>{inpValue}</div>
               <VSpace amount={1} />
@@ -106,9 +119,41 @@ export function CompShowcase() {
                 placeholder="Your password"
                 onInput={setPass}
                 error
+                variant="outlined"
               />
               <VSpace amount={1} />
               <Link to="/path">Cool link</Link>
+              <VSpace amount={1} />
+              <TextField
+                type="text"
+                label="Multiline"
+                value={inpValue}
+                onInput={(v) => setInpValue(v)}
+                icon={<Icon>person_outline</Icon>}
+                variant="outlined"
+                multiline={true}
+              />
+              <VSpace amount={1} />
+              <TextField
+                type="text"
+                label="Multiline"
+                value={inpValue}
+                onInput={(v) => setInpValue(v)}
+                icon={<Icon>person_outline</Icon>}
+                variant="underlined"
+                multiline={true}
+                error
+              />
+              <VSpace amount={1} />
+              <TextField
+                type="text"
+                label="Multiline"
+                value={inpValue}
+                onInput={(v) => setInpValue(v)}
+                variant="underlined"
+                multiline={true}
+                placeholder="Cool placeholder"
+              />
               <VSpace amount={1} />
               <Alert severity="error">
                 <div>
@@ -139,16 +184,23 @@ export function CompShowcase() {
                 quidem earum laboriosam voluptatum qui natus tempora at repellat
                 odio vel commodi doloremque, ipsam aut dolor!
               </Alert>
-              <FilledButton onClick={() => setModalOpen(true)}>
-                Open modal
-              </FilledButton>
+              <Button onClick={() => setModalOpen(true)}>Open modal</Button>
               <Modal
                 open={modalOpen}
                 onClose={() => {
                   setModalOpen(false);
                 }}
               >
-                something
+                <Container size="s">
+                  <PaddingXY x={4} y={2}>
+                    <Title>Hello world</Title>
+                    <p>
+                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                      Doloremque voluptas eos aliquam omnis velit cupiditate
+                      facere commodi dolorem. Itaque, vero.
+                    </p>
+                  </PaddingXY>
+                </Container>
               </Modal>
             </PaddingXY>
           </Surface>

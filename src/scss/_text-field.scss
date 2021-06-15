@@ -1,9 +1,17 @@
 .text-field {
+  $this: &;
   position: relative;
-  border: 1px solid gray;
-  border-radius: $b-radius;
   display: flex;
   align-items: center;
+
+  &--outlined {
+    border: 1px solid gray;
+    border-radius: $b-radius;
+  }
+
+  &--underlined {
+    border-bottom: 1px solid gray;
+  }
 
   &:hover {
     border-color: black;
@@ -19,52 +27,64 @@
 
   &__label {
     position: absolute;
-    left: 1rem;
     top: 50%;
     transform: translateY(-50%);
     background-color: white;
-
     transition: $transition;
-
     pointer-events: none;
 
-    &--has-text {
-      top: 0px;
-      transform: translateY(-60%);
-      font-size: 0.8rem;
+    #{$this}--outlined & {
+      left: 1rem;
       padding: 0 1px;
     }
 
-    &--active {
+    #{$this}--has-text & {
+      top: 0px;
+      transform: translateY(-60%);
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    #{$this}--active & {
       color: color("primary");
     }
 
-    &--error {
+    #{$this}--error & {
       color: color("error");
     }
   }
 
   &__input {
     all: unset;
-    box-sizing: border-box;
-    padding: 1rem;
     width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
 
     &::-ms-reveal,
     &::-ms-clear {
       display: none;
     }
+
+    #{$this}--outlined & {
+      padding: 1rem;
+    }
+
+    #{$this}--underlined & {
+      padding: 0.5rem 0;
+    }
   }
 
   &__icon {
-    padding: 0 1rem;
     cursor: pointer;
+    display: inline-block;
 
-    &--active {
+    padding: 0 1rem;
+
+    #{$this}--active & {
       color: color("primary");
     }
 
-    &--error {
+    #{$this}--error & {
       color: color("error");
     }
   }
