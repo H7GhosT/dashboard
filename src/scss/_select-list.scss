@@ -1,0 +1,28 @@
+.select-list {
+  &__item {
+    position: relative;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      transition: $transition;
+    }
+    &:hover {
+      &::before {
+        background-color: var(--color-light);
+      }
+    }
+    &--selected {
+      &::before {
+        width: 4px;
+        background-color: var(--color) !important;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { ReactNode, useRef } from "react";
 
 import { composeClass } from "components/utils";
-import { Surface } from "components/common/Surface";
+import { Surface } from "components/common";
 
 export interface ModalProps {
   children: ReactNode;
@@ -18,12 +18,26 @@ export function Modal({
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(document.createElement("div"));
 
+  if (Modal.openedModals.size) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "initial";
+  }
+
+  if (open) {
+    Modal.openedModals.add(modalRef);
+  } else {
+    Modal.openedModals.delete(modalRef);
+  }
+
   return (
     <div
       ref={modalRef}
       className={composeClass("modal", { open })}
       onClick={(e) => {
-        if (e.target == modalRef.current) onClose();
+        if (e.target == modalRef.current) {
+          onClose();
+        }
       }}
     >
       <div className="modal__content">
@@ -32,3 +46,5 @@ export function Modal({
     </div>
   );
 }
+
+Modal.openedModals = new Set();

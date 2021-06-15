@@ -5,7 +5,8 @@ import { MapType, addClsToProps } from "components/utils";
 export type ContainerSize = "s" | "m" | "l";
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  size: ContainerSize;
+  size: ContainerSize | number;
+  fixed?: boolean;
 }
 
 const containerSizeMap: MapType<ContainerSize, number> = {
@@ -14,11 +15,14 @@ const containerSizeMap: MapType<ContainerSize, number> = {
   l: 1200,
 };
 
-export function Container({ size, ...props }: ContainerProps) {
+export function Container({ size, fixed, ...props }: ContainerProps) {
   return (
     <div
+      style={{
+        [fixed ? "width" : "maxWidth"]:
+          typeof size == "number" ? size + "px" : containerSizeMap[size] + "px",
+      }}
       {...addClsToProps(props, "container")}
-      style={{ maxWidth: containerSizeMap[size] + "px" }}
     ></div>
   );
 }

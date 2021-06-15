@@ -47,3 +47,23 @@
   --color: #{color("success")};
   --color-light: #{color("success-light")};
 }
+
+.side-bar {
+  min-height: 100%;
+  display: flex;
+  align-items: stretch;
+  background-color: white;
+  box-shadow: 0px 2px 4px color("shadow");
+}
+
+.flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}

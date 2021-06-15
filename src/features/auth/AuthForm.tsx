@@ -4,10 +4,8 @@ import { useMutation } from "react-query";
 import {
   Alert,
   Container,
-  FullView,
   Icon,
   Surface,
-  Title,
   PaddingXY,
   VSpace,
   Button,
@@ -76,7 +74,7 @@ export function AuthForm({
   );
 
   return (
-    <FullView>
+    <div className="full-view">
       <VSpace amount={10} />
       <Container size="s">
         <Surface elevation={4}>
@@ -87,7 +85,7 @@ export function AuthForm({
                 mutate(user);
               }}
             >
-              <Title>{title}</Title>
+              <div className="title">{title}</div>
               <VSpace amount={1} />
               {fields.includes("name") ? (
                 <>
@@ -131,13 +129,7 @@ export function AuthForm({
                 <></>
               )}
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+              <div className="flex space-between align-center">
                 <Button type="submit" disabled={isLoading}>
                   Submit
                 </Button>
@@ -154,6 +146,6 @@ export function AuthForm({
           </PaddingXY>
         </Surface>
       </Container>
-    </FullView>
+    </div>
   );
 }

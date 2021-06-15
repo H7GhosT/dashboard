@@ -5,30 +5,53 @@ import { TextField, PasswordTextField } from "./components/text-field";
 import {
   Container,
   Icon,
-  Title,
   Surface,
   VSpace,
   HSpace,
   PaddingXY,
-  FullView,
   Alert,
   Button,
   Modal,
+  SelectList,
 } from "./components/common";
 
 export function CompShowcase() {
   const [inpValue, setInpValue] = useState("default");
   const [pass, setPass] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [modal2Open, setModal2Open] = useState(false);
+  const [selected, setSelected] = useState("1");
 
   return (
     <BrowserRouter>
-      <FullView style={{ background: "#20a0b025" }}>
+      <div className="full-view flex" style={{ background: "#20a0b025" }}>
+        <div className="side-bar">
+          <Container size={300} fixed>
+            <VSpace amount={10} />
+            <PaddingXY x={1} y={0}>
+              <div className="title">Dashboard</div>
+            </PaddingXY>
+            <VSpace amount={1} />
+            <SelectList
+              selected={selected}
+              items={new Array(4).fill(null).map((_, i) => ({
+                key: "" + i,
+                value: (
+                  <div className="flex space-between align-center">
+                    <span>List item {i}</span>
+                    <Icon>download</Icon>
+                  </div>
+                ),
+              }))}
+              onSelect={setSelected}
+            />
+          </Container>
+        </div>
         <Container size="s">
           <VSpace amount={3} />
           <Surface elevation={4} style={{ background: "white" }}>
             <PaddingXY x={2} y={2}>
-              <Title>Title</Title>
+              <div className="title">Title</div>
               <VSpace amount={1} />
               <Button variant="text">Button</Button>
               <HSpace amount={1} />
@@ -191,9 +214,29 @@ export function CompShowcase() {
                   setModalOpen(false);
                 }}
               >
+                <Container size="m">
+                  <PaddingXY x={4} y={2}>
+                    <div className="title">Hello world</div>
+                    <p>
+                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                      Doloremque voluptas eos aliquam omnis velit cupiditate
+                      facere commodi dolorem. Itaque, vero.
+                      <Button onClick={() => setModal2Open(true)}>
+                        Open modal
+                      </Button>
+                    </p>
+                  </PaddingXY>
+                </Container>
+              </Modal>
+              <Modal
+                open={modal2Open}
+                onClose={() => {
+                  setModal2Open(false);
+                }}
+              >
                 <Container size="s">
                   <PaddingXY x={4} y={2}>
-                    <Title>Hello world</Title>
+                    <div className="title">Hello world</div>
                     <p>
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                       Doloremque voluptas eos aliquam omnis velit cupiditate
@@ -202,10 +245,11 @@ export function CompShowcase() {
                   </PaddingXY>
                 </Container>
               </Modal>
+              <VSpace amount={3} />
             </PaddingXY>
           </Surface>
         </Container>
-      </FullView>
+      </div>
     </BrowserRouter>
   );
 }
