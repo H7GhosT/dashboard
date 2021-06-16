@@ -64,7 +64,16 @@
     &::-ms-clear {
       display: none;
     }
+  }
+  &__select {
+    all: unset;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+  }
 
+  &__input,
+  &__select {
     #{$this}--outlined & {
       padding: 1rem;
     }

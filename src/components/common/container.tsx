@@ -1,15 +1,14 @@
 import React from "react";
 
 import { MapType, addClsToProps } from "components/utils";
-
-export type ContainerSize = "s" | "m" | "l";
+import { ComponentSize } from "./types";
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  size: ContainerSize | number;
+  size: ComponentSize | number;
   fixed?: boolean;
 }
 
-const containerSizeMap: MapType<ContainerSize, number> = {
+const containerSizeMap: MapType<ComponentSize, number> = {
   s: 500,
   m: 720,
   l: 1200,

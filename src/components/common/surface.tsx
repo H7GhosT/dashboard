@@ -8,6 +8,12 @@ export interface SurfaceProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Surface({ elevation, ...props }: SurfaceProps) {
   return (
-    <div {...addClsToProps(props, "surface elevation-" + elevation)}></div>
+    <div
+      {...addClsToProps(
+        props,
+        "surface",
+        elevation ? "elevation-" + elevation : ""
+      )}
+    ></div>
   );
 }

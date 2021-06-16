@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 
-import { TextField, PasswordTextField } from "./components/text-field";
+import {
+  TextField,
+  PasswordTextField,
+  SelectTextField,
+} from "./components/text-field";
 import {
   Container,
   Icon,
@@ -13,6 +17,7 @@ import {
   Button,
   Modal,
   SelectList,
+  Loader,
 } from "./components/common";
 
 export function CompShowcase() {
@@ -20,7 +25,7 @@ export function CompShowcase() {
   const [pass, setPass] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modal2Open, setModal2Open] = useState(false);
-  const [selected, setSelected] = useState("1");
+  const [selected, setSelected] = useState("default");
 
   return (
     <BrowserRouter>
@@ -48,6 +53,9 @@ export function CompShowcase() {
           </Container>
         </div>
         <Container size="s">
+          <Loader size="s" />
+          <Loader size="m" />
+          <Loader size="l" />
           <VSpace amount={3} />
           <Surface elevation={4} style={{ background: "white" }}>
             <PaddingXY x={2} y={2}>
@@ -118,6 +126,29 @@ export function CompShowcase() {
                 variant="outlined"
               />
               <div>{inpValue}</div>
+              <VSpace amount={1} />
+              <SelectTextField
+                label="Your name"
+                onSelect={setSelected}
+                icon={<Icon>person_outline</Icon>}
+                variant="outlined"
+                items={new Array(4).fill(null).map((_, i) => ({
+                  key: "" + i,
+                  value: "List item " + i,
+                }))}
+                selected={selected}
+              />
+              <VSpace amount={1} />
+              <SelectTextField
+                label="Your name"
+                onSelect={setSelected}
+                icon={<Icon>person_outline</Icon>}
+                items={new Array(4).fill(null).map((_, i) => ({
+                  key: "" + i,
+                  value: "List item " + i,
+                }))}
+                selected={selected}
+              />
               <VSpace amount={1} />
               <PasswordTextField
                 label="Password"
