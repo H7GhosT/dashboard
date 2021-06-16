@@ -9,9 +9,12 @@ export function insertBetween<T>(arr: T[], v: T) {
 }
 
 export function dateToInputFormat(date?: Date) {
-  if (!date) return "";
+  if (!date || isNaN(date as unknown as number)) return "";
+
   const day = ("0" + date.getDate()).slice(-2);
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const year = ("000" + date.getFullYear()).slice(-4);
 
-  return date.getFullYear() + "-" + month + "-" + day;
+  const s = year + "-" + month + "-" + day;
+  return s;
 }
