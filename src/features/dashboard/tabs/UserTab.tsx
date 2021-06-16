@@ -17,8 +17,11 @@ import {
   Loader,
 } from "components/common";
 import { UserModal } from "../modals";
+import { useContext } from "react";
+import { UserContext } from "contexts/UserContext";
 
 export function UserTab() {
+  const fromAdmin = useContext(UserContext).user?.permission == "admin";
   const {
     data: users,
     isLoading: isUsersLoading,
@@ -61,12 +64,18 @@ export function UserTab() {
             <VSpace amount={1} />
           )}
           <VSpace amount={1} />
-          <Button onClick={() => setNewModalOpen(true)}>
-            New user
-            <HSpace amount={1} />
-            <Icon>add</Icon>
-          </Button>
-          <VSpace amount={1} />
+          {fromAdmin ? (
+            <>
+              <Button onClick={() => setNewModalOpen(true)}>
+                New user
+                <HSpace amount={1} />
+                <Icon>add</Icon>
+              </Button>
+              <VSpace amount={1} />
+            </>
+          ) : (
+            ""
+          )}
         </>
       ) : (
         <Loader />
