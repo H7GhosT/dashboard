@@ -94,3 +94,11 @@
 .nowrap {
   white-space: nowrap;
 }
+
+.use-bg {
+  background-color: var(--color);
+}
+
+.use-light-bg {
+  background-color: var(--color-light);
+}

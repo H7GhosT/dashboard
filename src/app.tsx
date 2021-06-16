@@ -12,7 +12,9 @@ export function App() {
     <BrowserRouter>
       <QueryClientProvider client={client}>
         <UserContextProvider>
-          <PageSwitch />
+          <div className="use-light-bg info full-vh">
+            <PageSwitch />
+          </div>
         </UserContextProvider>
       </QueryClientProvider>
     </BrowserRouter>
