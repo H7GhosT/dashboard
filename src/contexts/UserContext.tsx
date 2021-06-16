@@ -1,7 +1,8 @@
-import { getUserBy } from "api/users";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 import { User } from "types/user";
+import { getUserBy } from "api/users";
 
 export interface IUserContext {
   user: User | null;
@@ -33,13 +34,19 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       localStorage.removeItem("logged-user");
     },
   });
-  useEffect(() => {
-    (async () => {
+  const { data: user } = useQuery<User | null>(
+    "logged-user",
+    async () => {
       const loggedUserId = localStorage.getItem("logged-user") || "";
       const user: User | null = await getUserBy("id", loggedUserId);
-      if (user) state.loginUser(user);
-    })();
-  }, []);
+      return user;
+    },
+    {
+      onSuccess: (user) => {
+        if (user) state.loginUser(user);
+      },
+    }
+  );
 
   return <UserContext.Provider value={state}>{children}</UserContext.Provider>;
 }

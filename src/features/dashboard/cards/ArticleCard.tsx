@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { Article } from "types";
 import {
@@ -10,14 +10,22 @@ import {
   VSpace,
   Button,
   Icon,
+  Loader,
+  Alert,
 } from "components/common";
-import { getAllUsers } from "api";
+import { deleteArticle, getAllUsers } from "api";
 import { CardProps } from "../types";
 import { UserContext } from "contexts/UserContext";
 
 export function ArticleCard({ data, onEdit }: CardProps<Article>) {
   const { data: users } = useQuery("users", getAllUsers);
   const fromAdmin = useContext(UserContext).user?.permission == "admin";
+  const {
+    isLoading: isDeletingPending,
+    isError: hasDeletingError,
+    mutate: mutateDelete,
+  } = useMutation(() => deleteArticle(data.id), {});
+  const queryClient = useQueryClient();
 
   return (
     <Container size="m">
@@ -34,9 +42,26 @@ export function ArticleCard({ data, onEdit }: CardProps<Article>) {
             <div className="title">{data.title}</div>
             <HSpace amount={1} />
             {fromAdmin ? (
-              <Button theme="info" variant="text" onClick={onEdit}>
-                <Icon>edit</Icon>
-              </Button>
+              <div className="nowrap">
+                <Button theme="info" variant="text" onClick={onEdit}>
+                  <Icon>edit</Icon>
+                </Button>
+                <Button
+                  theme="error"
+                  variant="text"
+                  onClick={() => {
+                    mutateDelete(undefined, {
+                      onSuccess: () =>
+                        queryClient.refetchQueries(["articles"], {
+                          stale: true,
+                          exact: true,
+                        }),
+                    });
+                  }}
+                >
+                  <Icon>delete</Icon>
+                </Button>
+              </div>
             ) : (
               ""
             )}
@@ -44,7 +69,15 @@ export function ArticleCard({ data, onEdit }: CardProps<Article>) {
           <HSpace amount={1} />
           <hr />
           <VSpace amount={1} />
-          <pre style={{ whiteSpace: "pre-wrap" }}>{data.content}</pre>
+          <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+            {data.content}
+          </pre>
+          {isDeletingPending ? <Loader /> : ""}
+          {hasDeletingError ? (
+            <Alert severity="error">Error deleting the article</Alert>
+          ) : (
+            ""
+          )}
         </PaddingXY>
       </Surface>
     </Container>

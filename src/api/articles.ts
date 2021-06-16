@@ -1,3 +1,5 @@
+import { v1 as uuidv1 } from "uuid";
+
 import { Article } from "types";
 import { SERVER_URL } from "./config";
 
@@ -12,12 +14,34 @@ export async function getAllArticles() {
 }
 
 export async function updateArticle(article: Article) {
-  const response = await fetch(SERVER_URL + "/articles/" + article.id, {
+  return await fetch(SERVER_URL + "/articles/" + article.id, {
     method: "PUT",
     body: JSON.stringify(article),
     headers: {
       "Content-Type": "application/json",
     },
   });
-  const data: Article[] = await response.json();
+}
+
+export async function deleteArticle(id: string) {
+  return await fetch(SERVER_URL + "/articles/" + id, {
+    method: "DELETE",
+  });
+}
+
+export async function addArticle({ title, content, authorId }: Article) {
+  const response = await fetch(SERVER_URL + "/articles", {
+    method: "POST",
+    body: JSON.stringify({
+      id: uuidv1(),
+      authorId,
+      title,
+      content,
+      dateCreated: new Date(),
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return await response.json();
 }

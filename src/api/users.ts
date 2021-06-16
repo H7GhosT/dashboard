@@ -2,6 +2,7 @@ import { v1 as uuidv1 } from "uuid";
 
 import { SERVER_URL } from "./config";
 import { FormUser, User } from "types";
+import { UserPermission } from "../types/user";
 
 export async function emailExists(email: string) {
   const response = await fetch(SERVER_URL + "/users");
@@ -9,7 +10,10 @@ export async function emailExists(email: string) {
   return !!users.find((u) => u.email === email);
 }
 
-export async function registerUser({ name, email, password }: FormUser) {
+export async function registerUser(
+  { name, email, password }: FormUser,
+  permission: UserPermission = "user"
+) {
   const response = await fetch(SERVER_URL + "/users", {
     method: "POST",
     body: JSON.stringify({
@@ -17,7 +21,7 @@ export async function registerUser({ name, email, password }: FormUser) {
       name,
       email,
       password,
-      permission: "user",
+      permission,
     }),
     headers: {
       "Content-Type": "application/json",
@@ -47,4 +51,10 @@ export async function updateUser(user: User) {
     },
   });
   return await response.json();
+}
+
+export async function deleteUser(id: string) {
+  return await fetch(SERVER_URL + "/users/" + id, {
+    method: "DELETE",
+  });
 }

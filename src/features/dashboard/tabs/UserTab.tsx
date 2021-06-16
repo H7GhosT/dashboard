@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 
-import { User, UserPermission } from "types";
-import { getAllUsers } from "api";
+import { emptyUser, FormUser, User, UserPermission } from "types";
+import { deleteUser, getAllUsers, registerUser, updateUser } from "api";
 import { UserCard } from "../cards";
 import { insertBetween } from "utils";
 import {
@@ -14,9 +14,9 @@ import {
   Icon,
   Button,
   Alert,
+  Loader,
 } from "components/common";
-import { TextField, PasswordTextField } from "components/text-field";
-import { updateUser } from "api/users";
+import { UserModal } from "../modals";
 
 export function UserTab() {
   const {
@@ -30,106 +30,126 @@ export function UserTab() {
     isError: hasEditingError,
     mutate: mutateUser,
   } = useMutation(updateUser, {});
-  const [modalOpen, setModalOpen] = useState(false);
+  const {
+    isLoading: isNewUserPending,
+    isError: hasNewUserError,
+    mutate: mutateNewUser,
+  } = useMutation((user: User) => registerUser(user, user.permission), {});
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [newModalOpen, setNewModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User>();
+  const [newUser, setNewUser] = useState<User | undefined>(emptyUser());
 
   return (
     <div>
       {hasUsersError ? (
         <Alert severity="error">Error loading users</Alert>
       ) : !isUsersLoading ? (
-        insertBetween(
-          users?.map((u) => (
-            <UserCard
-              data={u}
-              onEdit={() => {
-                setEditingUser(u);
-                setModalOpen(true);
-              }}
-            />
-          )) || [],
+        <>
+          {insertBetween(
+            users?.map((u) => (
+              <UserCard
+                key={u.id}
+                data={u}
+                onEdit={() => {
+                  setEditingUser(u);
+                  setEditModalOpen(true);
+                }}
+              />
+            )) || [],
+            <VSpace amount={1} />
+          )}
           <VSpace amount={1} />
-        )
+          <Button onClick={() => setNewModalOpen(true)}>
+            New user
+            <HSpace amount={1} />
+            <Icon>add</Icon>
+          </Button>
+          <VSpace amount={1} />
+        </>
       ) : (
-        "Loading..."
+        <Loader />
       )}
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <Container size="s" fixed>
-          <PaddingXY x={4} y={3}>
-            <div className="title">Edit user</div>
-            <VSpace amount={2} />
-            <select
-              onChange={(e) =>
-                setEditingUser((u) => ({
-                  ...u!,
-                  permission: e.target.value as UserPermission,
-                }))
-              }
-            >
-              <option
-                selected={editingUser?.permission == "admin"}
-                value="admin"
+      <UserModal
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        top={<div className="title">Edit user</div>}
+        bottom={
+          <>
+            <div className="flex space-between align-center">
+              <Button
+                disabled={isEditingPending}
+                onClick={async () => {
+                  mutateUser(editingUser!, {
+                    onSuccess: () => {
+                      refetch();
+                      setEditModalOpen(false);
+                    },
+                  });
+                }}
               >
-                Admin
-              </option>
-              <option selected={editingUser?.permission == "user"} value="user">
-                User
-              </option>
-            </select>
-            <VSpace amount={1} />
-            <TextField
-              value={editingUser?.email}
-              type="email"
-              onInput={(email) => setEditingUser((u) => ({ ...u!, email }))}
-              variant="outlined"
-              label="Email"
-            />
-            <VSpace amount={1} />
-            <TextField
-              value={editingUser?.name}
-              type="text"
-              onInput={(name) => setEditingUser((u) => ({ ...u!, name }))}
-              variant="outlined"
-              label="Name"
-            />
-            <VSpace amount={1} />
-            <PasswordTextField
-              value={editingUser?.password}
-              onInput={(password) =>
-                setEditingUser((u) => ({ ...u!, password }))
-              }
-              variant="outlined"
-              label="Password"
-            />
-            <VSpace amount={1} />
-            <Button
-              onClick={async () => {
-                mutateUser(editingUser!, {
-                  onSuccess: () => {
-                    refetch();
-                    setModalOpen(false);
-                  },
-                });
-              }}
-            >
-              Save
-              <HSpace amount={1} />
-              <Icon>save</Icon>
-            </Button>
-            <br />
+                Save
+                <HSpace amount={1} />
+                <Icon>save</Icon>
+              </Button>
+              {isEditingPending ? <Loader /> : ""}
+            </div>
             {hasEditingError ? (
               <>
                 <VSpace amount={1} />
                 <Alert severity="error">Error saving the user</Alert>
               </>
-            ) : isEditingPending ? (
-              "Pending..."
             ) : (
               ""
             )}
-          </PaddingXY>
-        </Container>
-      </Modal>
+          </>
+        }
+        data={editingUser}
+        setData={setEditingUser}
+      />
+      <UserModal
+        open={newModalOpen}
+        onClose={() => setNewModalOpen(false)}
+        top={<div className="title">New user</div>}
+        bottom={
+          <>
+            <div className="flex space-between align-center">
+              <Button
+                disabled={isNewUserPending}
+                onClick={async () => {
+                  mutateNewUser(newUser!, {
+                    onSuccess: () => {
+                      refetch();
+                      setNewModalOpen(false);
+                    },
+                  });
+                }}
+              >
+                Add
+                <HSpace amount={1} />
+                <Icon>add</Icon>
+              </Button>
+              {isNewUserPending ? <Loader /> : ""}
+            </div>
+            {hasNewUserError ? (
+              <>
+                <VSpace amount={1} />
+                <Alert severity="error">Error adding the user</Alert>
+              </>
+            ) : (
+              ""
+            )}
+          </>
+        }
+        data={newUser}
+        setData={setNewUser}
+      />
     </div>
   );
 }
+/*
+
+
+
+*/

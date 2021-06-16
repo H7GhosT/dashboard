@@ -31,7 +31,7 @@ export function DashboardPage() {
   } = useQuery<Article[]>("articles", getAllArticles);
 
   return (
-    <div className="full-vh flex">
+    <div className="full-vh flex" style={{ background: "#11aa5525" }}>
       <div className="side-bar">
         <Container size={300} fixed>
           <PaddingXY x={1} y={2}>
@@ -44,7 +44,6 @@ export function DashboardPage() {
                 <Icon>logout</Icon>
               </Button>
             </div>
-            <br />
           </PaddingXY>
           <hr />
           <VSpace amount={3} />

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useMutation, useQuery } from "react-query";
 
-import { Article, User } from "types";
-import { getAllArticles, updateArticle } from "api";
+import { Article } from "types";
+import { getAllArticles, updateArticle, addArticle } from "api";
 import { ArticleCard } from "../cards";
-import { dateToInputFormat, insertBetween } from "utils";
+import { insertBetween } from "utils";
 import {
   VSpace,
   Modal,
@@ -14,10 +14,15 @@ import {
   Icon,
   Button,
   Alert,
+  Loader,
 } from "components/common";
-import { TextField } from "components/text-field";
+import { ArticleModal } from "../modals";
+import { emptyArticle } from "types/utils";
+import { UserContext } from "contexts/UserContext";
 
 export function ArticleTab() {
+  const { user: loggedUser } = useContext(UserContext);
+
   const {
     data: articles,
     isLoading: isArticlesLoading,
@@ -29,96 +34,123 @@ export function ArticleTab() {
     isError: hasEditingError,
     mutate: mutateArticle,
   } = useMutation(updateArticle, {});
-  const [modalOpen, setModalOpen] = useState(false);
+  const {
+    isLoading: isNewArticlePending,
+    isError: hasNewArticleError,
+    mutate: mutateNewArticle,
+  } = useMutation((article: Article) => addArticle(article), {});
+  const [editingModalOpen, setEditingModalOpen] = useState(false);
+  const [newModalOpen, setNewModalOpen] = useState(false);
   const [editingArticle, setEditingArticle] = useState<Article>();
+  const [newArticle, setNewArticle] = useState<Article | undefined>({
+    ...emptyArticle(),
+    authorId: loggedUser!.id,
+  });
 
   return (
     <div>
       {hasArticlesError ? (
         <Alert severity="error">Error loading articles</Alert>
       ) : !isArticlesLoading ? (
-        insertBetween(
-          articles?.map((a) => (
-            <ArticleCard
-              data={a}
-              onEdit={() => {
-                setEditingArticle(a);
-                console.log(a.dateCreated.toLocaleDateString());
-                setModalOpen(true);
-              }}
-            />
-          )) || [],
+        <>
+          {insertBetween(
+            articles?.map((a) => (
+              <ArticleCard
+                key={a.id}
+                data={a}
+                onEdit={() => {
+                  setEditingArticle(a);
+                  setEditingModalOpen(true);
+                }}
+              />
+            )) || [],
+            <VSpace amount={1} />
+          )}
           <VSpace amount={1} />
-        )
+          <Button onClick={() => setNewModalOpen(true)}>
+            New article
+            <HSpace amount={1} />
+            <Icon>add</Icon>
+          </Button>
+          <VSpace amount={1} />
+        </>
       ) : (
-        "Loading..."
+        <Loader />
       )}
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <Container size="m" fixed>
-          <PaddingXY x={4} y={3}>
-            <div className="title">Edit article</div>
-            <VSpace amount={2} />
-            <TextField
-              value={editingArticle?.title}
-              type="text"
-              onInput={(title) => setEditingArticle((a) => ({ ...a!, title }))}
-              label="Title"
-            />
-            <VSpace amount={1} />
-            <TextField
-              value={dateToInputFormat(editingArticle?.dateCreated)}
-              type="date"
-              onInput={(date) =>
-                setEditingArticle((a) => ({
-                  ...a!,
-                  dateCreated: new Date(date),
-                }))
-              }
-              label="Date created"
-            />
-            <VSpace amount={1} />
-            <TextField
-              value={editingArticle?.content}
-              type="text"
-              multiline
-              onInput={(content) =>
-                setEditingArticle((a) => ({
-                  ...a!,
-                  content,
-                }))
-              }
-              label="Content"
-            />
-            <VSpace amount={1} />
-
-            <Button
-              onClick={async () => {
-                mutateArticle(editingArticle!, {
-                  onSuccess: () => {
-                    refetch();
-                    setModalOpen(false);
-                  },
-                });
-              }}
-            >
-              Save
-              <HSpace amount={1} />
-              <Icon>save</Icon>
-            </Button>
-            <br />
+      <ArticleModal
+        hasDate
+        data={editingArticle}
+        setData={setEditingArticle}
+        open={editingModalOpen}
+        onClose={() => setEditingModalOpen(false)}
+        top={<div className="title">Edit article</div>}
+        bottom={
+          <>
+            <div className="flex space-between align-center">
+              <Button
+                onClick={async () => {
+                  mutateArticle(editingArticle!, {
+                    onSuccess: () => {
+                      refetch();
+                      setEditingModalOpen(false);
+                    },
+                  });
+                }}
+              >
+                Save
+                <HSpace amount={1} />
+                <Icon>save</Icon>
+              </Button>
+              {isEditingPending ? <Loader /> : ""}
+            </div>
             {hasEditingError ? (
               <>
                 <VSpace amount={1} />
                 <Alert severity="error">Error saving the article</Alert>
               </>
-            ) : isEditingPending ? (
-              "Pending..."
             ) : (
               ""
             )}
-          </PaddingXY>
-        </Container>
-      </Modal>
+          </>
+        }
+      />
+      <ArticleModal
+        open={newModalOpen}
+        onClose={() => setNewModalOpen(false)}
+        top={<div className="title">New article (by {loggedUser!.name})</div>}
+        bottom={
+          <>
+            <div className="flex space-between align-center">
+              <Button
+                disabled={isNewArticlePending}
+                onClick={async () => {
+                  mutateNewArticle(newArticle!, {
+                    onSuccess: () => {
+                      refetch();
+                      setNewModalOpen(false);
+                    },
+                  });
+                }}
+              >
+                Add
+                <HSpace amount={1} />
+                <Icon>add</Icon>
+              </Button>
+              {isNewArticlePending ? <Loader /> : ""}
+            </div>
+            {hasNewArticleError ? (
+              <>
+                <VSpace amount={1} />
+                <Alert severity="error">Error adding the user</Alert>
+              </>
+            ) : (
+              ""
+            )}
+          </>
+        }
+        data={newArticle}
+        setData={setNewArticle}
+      />
     </div>
   );
 }
