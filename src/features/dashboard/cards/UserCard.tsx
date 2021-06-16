@@ -2,9 +2,12 @@ import React from "react";
 
 import { User } from "types";
 import { PaddingXY, Surface, Container, Button, Icon } from "components/common";
-import { CardProps } from "./types";
+import { CardProps } from "../types";
+import { useContext } from "react";
+import { UserContext } from "../../../contexts/UserContext";
 
-export function UserCard({ fromAdmin, data, onEdit }: CardProps<User>) {
+export function UserCard({ data, onEdit }: CardProps<User>) {
+  const fromAdmin = useContext(UserContext).user?.permission == "admin";
   return (
     <Container size="s" fixed>
       <Surface elevation={2}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "react-query";
 
 import { Article } from "types";
@@ -8,12 +8,17 @@ import {
   Container,
   HSpace,
   VSpace,
+  Button,
+  Icon,
 } from "components/common";
 import { getAllUsers } from "api";
-import { CardProps } from "./types";
+import { CardProps } from "../types";
+import { UserContext } from "contexts/UserContext";
 
-export function ArticleCard({ fromAdmin, data }: CardProps<Article>) {
+export function ArticleCard({ data, onEdit }: CardProps<Article>) {
   const { data: users } = useQuery("users", getAllUsers);
+  const fromAdmin = useContext(UserContext).user?.permission == "admin";
+
   return (
     <Container size="m">
       <Surface elevation={3}>
@@ -25,7 +30,17 @@ export function ArticleCard({ fromAdmin, data }: CardProps<Article>) {
             <HSpace amount={1} />
             <span className="small">{data.dateCreated.toDateString()}</span>
           </div>
-          <div className="title">{data.title}</div>
+          <div className="flex space-between align-center">
+            <div className="title">{data.title}</div>
+            <HSpace amount={1} />
+            {fromAdmin ? (
+              <Button theme="info" variant="text" onClick={onEdit}>
+                <Icon>edit</Icon>
+              </Button>
+            ) : (
+              ""
+            )}
+          </div>
           <HSpace amount={1} />
           <hr />
           <VSpace amount={1} />

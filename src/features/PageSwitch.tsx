@@ -11,7 +11,7 @@ export function PageSwitch() {
   return user ? (
     <Switch>
       <Route path="/dashboard">
-        <DashboardPage fromAdmin={user.permission == "admin"} />
+        <DashboardPage />
       </Route>
       <Redirect to="/dashboard" />
     </Switch>

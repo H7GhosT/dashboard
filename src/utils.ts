@@ -7,3 +7,11 @@ export function insertBetween<T>(arr: T[], v: T) {
   });
   return result;
 }
+
+export function dateToInputFormat(date?: Date) {
+  if (!date) return "";
+  const day = ("0" + date.getDate()).slice(-2);
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+
+  return date.getFullYear() + "-" + month + "-" + day;
+}

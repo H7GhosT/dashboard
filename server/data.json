@@ -2,8 +2,8 @@
   "users": [
     {
       "id": "top-admin",
-      "name": "daniel",
-      "password": "1234",
+      "name": "Daniel",
+      "password": "admin",
       "email": "top-admin@email.com",
       "permission": "admin"
     },
@@ -23,7 +23,7 @@
     },
     {
       "id": "53b505bc-3742-4b05-8d8b-30b1ed6a1919",
-      "name": "Mrs. Lucille Grimes (modified)",
+      "name": "Mrs. Lucille Grimes (modified 3)",
       "email": "Troy38@yahoo.com",
       "password": "7HkjcSgfyVgKhMt",
       "permission": "user"
@@ -75,7 +75,7 @@
       "name": "Josephine Collins",
       "email": "Cayla51@gmail.com",
       "password": "yzY825HaTQ56AZl",
-      "permission": "user"
+      "permission": "admin"
     },
     {
       "id": "1cdde175-2c02-4398-9260-16ad06b493e7",
@@ -103,7 +103,7 @@
       "name": "New user",
       "email": "newuser@user.user",
       "password": "12345678",
-      "permission": "user"
+      "permission": "admin"
     }
   ],
   "articles": [
@@ -118,7 +118,7 @@
       "id": "8da41438-297f-49c2-853d-5668fc0bfa9f",
       "authorId": "6f41ba71-5698-4f3d-9a45-f320c0b75817",
       "title": "qui aliquam libero magni autem",
-      "content": "Nisi neque id libero debitis qui. Culpa fugiat ex adipisci. Ut sit iste. Fugit tempore voluptatibus voluptatem.\n-----\nQuis sed est ut quo a omnis repudiandae maxime quo. Molestias doloribus accusamus enim dignissimos qui asperiores. Accusantium ut ratione adipisci necessitatibus sunt neque similique. Aut asperiores a laborum voluptate ipsa est minus harum laborum.\n-----\nQuis saepe dolorem eaque perferendis maiores sint at. Nam quisquam qui quia commodi quia quidem eaque voluptatem. Autem sapiente voluptatem omnis ut.",
+      "content": "Edited content 2\n\nNisi neque id libero debitis qui. Culpa fugiat ex adipisci. Ut sit iste. Fugit tempore voluptatibus voluptatem.\n-----\nQuis sed est ut quo a omnis repudiandae maxime quo. Molestias doloribus accusamus enim dignissimos qui asperiores. Accusantium ut ratione adipisci necessitatibus sunt neque similique. Aut asperiores a laborum voluptate ipsa est minus harum laborum.\n-----\nQuis saepe dolorem eaque perferendis maiores sint at. Nam quisquam qui quia commodi quia quidem eaque voluptatem. Autem sapiente voluptatem omnis ut.",
       "dateCreated": "2059-04-03T10:57:57.400Z"
     },
     {

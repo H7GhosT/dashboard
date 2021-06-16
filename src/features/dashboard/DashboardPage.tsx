@@ -15,16 +15,11 @@ import { TextField, PasswordTextField } from "components/text-field";
 import { UserContext } from "contexts/UserContext";
 import { getAllArticles, getAllUsers } from "api";
 import { User, Article } from "types";
-import { ArticleCard } from "./ArticleCard";
+import { ArticleCard } from "./cards/ArticleCard";
 import { insertBetween } from "utils";
-import { UserCard } from "./UserCard";
-import { updateUser } from "api/users";
+import { UserTab, ArticleTab } from "./tabs";
 
-export interface DashboardPageProps {
-  fromAdmin: boolean;
-}
-
-export function DashboardPage({ fromAdmin }: DashboardPageProps) {
+export function DashboardPage() {
   const [selected, setSelected] = useState("articles");
 
   const { user, logout } = useContext(UserContext);
@@ -34,14 +29,6 @@ export function DashboardPage({ fromAdmin }: DashboardPageProps) {
     isLoading: isArticlesLoading,
     refetch: refetchArticles,
   } = useQuery<Article[]>("articles", getAllArticles);
-  const {
-    data: users,
-    isLoading: isUsersLoading,
-    refetch: refetchUsers,
-  } = useQuery<User[]>("users", getAllUsers);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<User>();
 
   return (
     <div className="full-vh flex">
@@ -66,6 +53,7 @@ export function DashboardPage({ fromAdmin }: DashboardPageProps) {
           </PaddingXY>
           <VSpace amount={1} />
           <SelectList
+            theme="success"
             items={[
               ["users", "Users", "person"],
               ["articles", "Articles", "article"],
@@ -86,74 +74,10 @@ export function DashboardPage({ fromAdmin }: DashboardPageProps) {
       <div>
         <VSpace amount={3} />
         <div>
-          {insertBetween(
-            (selected == "users"
-              ? users?.map((u) => (
-                  <UserCard
-                    fromAdmin={fromAdmin}
-                    data={u}
-                    onEdit={() => {
-                      setEditingUser(u);
-                      setModalOpen(true);
-                    }}
-                  />
-                ))
-              : selected == "articles"
-              ? articles?.map((a) => (
-                  <ArticleCard
-                    fromAdmin={fromAdmin}
-                    data={a}
-                    onEdit={() => {}}
-                  />
-                ))
-              : []) || [],
-            <VSpace amount={1} />
-          )}
+          {selected == "users" ? <UserTab /> : <ArticleTab />}
           <VSpace amount={1} />
         </div>
       </div>
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <Container size="s" fixed>
-          <PaddingXY x={4} y={3}>
-            <TextField
-              value={editingUser?.email}
-              type="email"
-              onInput={(email) => setEditingUser((u) => ({ ...u!, email }))}
-              variant="outlined"
-              label="Email"
-            />
-            <VSpace amount={1} />
-            <TextField
-              value={editingUser?.name}
-              type="text"
-              onInput={(name) => setEditingUser((u) => ({ ...u!, name }))}
-              variant="outlined"
-              label="Name"
-            />
-            <VSpace amount={1} />
-            <PasswordTextField
-              value={editingUser?.password}
-              onInput={(password) =>
-                setEditingUser((u) => ({ ...u!, password }))
-              }
-              variant="outlined"
-              label="Password"
-            />
-            <VSpace amount={1} />
-            <Button
-              onClick={async () => {
-                await updateUser(editingUser!);
-                refetchUsers();
-                setModalOpen(false);
-              }}
-            >
-              Save
-              <HSpace amount={1} />
-              <Icon>save</Icon>
-            </Button>
-          </PaddingXY>
-        </Container>
-      </Modal>
     </div>
   );
 }
