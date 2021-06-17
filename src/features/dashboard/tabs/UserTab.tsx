@@ -1,21 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 
-import { emptyUser, FormUser, User, UserPermission } from "types";
-import { deleteUser, getAllUsers, registerUser, updateUser } from "api";
+import { emptyUser, User } from "types";
+import { getAllUsers, registerUser, updateUser } from "api";
 import { UserCard } from "../cards";
 import { insertBetween } from "utils";
-import {
-  VSpace,
-  Modal,
-  Container,
-  PaddingXY,
-  HSpace,
-  Icon,
-  Button,
-  Alert,
-  Loader,
-} from "components/common";
+import { VSpace, HSpace, Icon, Button, Alert, Loader } from "components/common";
 import { UserModal } from "../modals";
 import { useContext } from "react";
 import { UserContext } from "contexts/UserContext";

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { composeClass } from "components/utils";
 import { ITextFieldProps } from "./types";
-import { autoResize } from "./utils";
 
 export interface SelectTextFieldProps
   extends Omit<

@@ -1,15 +1,6 @@
-import React, { Dispatch, ReactNode, SetStateAction } from "react";
+import React from "react";
 
-import {
-  VSpace,
-  Modal,
-  Container,
-  PaddingXY,
-  HSpace,
-  Icon,
-  Button,
-  Alert,
-} from "components/common";
+import { VSpace, Modal, Container, PaddingXY } from "components/common";
 import {
   TextField,
   PasswordTextField,

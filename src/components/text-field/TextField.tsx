@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 
 import { composeClass } from "components/utils";
 import { ITextFieldProps } from "./types";
-import { autoResize } from "./utils";
+import { resizeTextArea } from "./utils";
 
 export function TextField({
   label = "",
@@ -32,7 +32,7 @@ export function TextField({
     onBlur: () => setIsFocused(false),
   };
 
-  if (multiline) autoResize(inpRef);
+  if (multiline) resizeTextArea(inpRef);
 
   return (
     <div

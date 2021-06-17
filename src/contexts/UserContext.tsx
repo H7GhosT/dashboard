@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useEffect, useState } from "react";
+import React, { createContext, ReactNode, useState } from "react";
 import { useQuery } from "react-query";
 
 import { User } from "types/user";

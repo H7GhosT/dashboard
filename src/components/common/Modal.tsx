@@ -19,17 +19,11 @@ export function Modal({
   const modalRef = useRef<HTMLDivElement>(document.createElement("div"));
 
   useEffect(() => {
-    if (open) {
-      Modal.openedModals.add(modalRef);
-    } else {
-      Modal.openedModals.delete(modalRef);
-    }
-    if (Modal.openedModals.size) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "initial";
-    }
-  }, [open]);
+    Modal.update(modalRef, open);
+    return () => {
+      Modal.update(modalRef, false);
+    };
+  }, [open, modalRef]);
 
   return (
     <div
@@ -49,3 +43,15 @@ export function Modal({
 }
 
 Modal.openedModals = new Set();
+Modal.update = (modalRef: React.Ref<HTMLDivElement>, open: boolean) => {
+  if (open) {
+    Modal.openedModals.add(modalRef);
+  } else {
+    Modal.openedModals.delete(modalRef);
+  }
+  if (Modal.openedModals.size) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "initial";
+  }
+};

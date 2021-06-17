@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useQuery } from "react-query";
 
 import {
   Container,
@@ -9,26 +8,15 @@ import {
   VSpace,
   Button,
   HSpace,
-  Modal,
 } from "components/common";
-import { TextField, PasswordTextField } from "components/text-field";
+
 import { UserContext } from "contexts/UserContext";
-import { getAllArticles, getAllUsers } from "api";
-import { User, Article } from "types";
-import { ArticleCard } from "./cards/ArticleCard";
-import { insertBetween } from "utils";
 import { UserTab, ArticleTab } from "./tabs";
 
 export function DashboardPage() {
   const [selected, setSelected] = useState("articles");
 
   const { user, logout } = useContext(UserContext);
-
-  const {
-    data: articles,
-    isLoading: isArticlesLoading,
-    refetch: refetchArticles,
-  } = useQuery<Article[]>("articles", getAllArticles);
 
   return (
     <div className="full-vh flex">

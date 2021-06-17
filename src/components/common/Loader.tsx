@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 
 import { ComponentSize, ComponentTheme } from "./types";
 import { MapType } from "components/utils";
