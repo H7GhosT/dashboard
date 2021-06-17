@@ -20,6 +20,8 @@
   &__content {
     transform: translateY(60%);
     transition: $transition;
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
   &--open > &__content {
