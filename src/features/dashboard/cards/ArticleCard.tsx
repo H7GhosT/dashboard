@@ -1,85 +1,92 @@
 import React, { useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { Article } from "types";
-import {
-  PaddingXY,
-  Surface,
-  Container,
-  HSpace,
-  VSpace,
-  Button,
-  Icon,
-  Loader,
-  Alert,
-} from "components/common";
-import { deleteArticle, getAllUsers } from "api";
+import { Card, Space, Button, Loader,  Col, Alert } from "ebs-design";
+
+import { Article, User } from "types";
+import { deleteArticle, getAllUsers, getUserBy } from "api";
 import { CardProps } from "../types";
 import { UserContext } from "contexts/UserContext";
 
 export function ArticleCard({ data, onEdit }: CardProps<Article>) {
-  const { data: users } = useQuery("users", getAllUsers);
+  const { data: author, isLoading: isAuthorLoading } = useQuery<User | null>(
+    ["users", data.authorId],
+    () => getUserBy("id", data.authorId),
+    {}
+  );
   const fromAdmin = useContext(UserContext).user?.permission == "admin";
   const {
-    isLoading: isDeletingPending,
-    isError: hasDeletingError,
+    isLoading: isDeletePending,
+    isError: hasDeleteError,
     mutate: mutateDelete,
   } = useMutation(() => deleteArticle(data.id), {});
   const queryClient = useQueryClient();
 
   return (
-    <Container size="m">
-      <Surface elevation={3}>
-        <PaddingXY x={3} y={2}>
-          <div>
-            <span className="text-gray bold small">
-              {users?.find((u) => u.id == data.authorId)?.name}
-            </span>
-            <HSpace amount={1} />
-            <span className="small">{data.dateCreated.toDateString()}</span>
-          </div>
-          <div className="flex space-between align-center">
-            <div className="title">{data.title}</div>
-            <HSpace amount={1} />
-            {fromAdmin ? (
-              <div className="nowrap">
-                <Button theme="info" variant="text" onClick={onEdit}>
-                  <Icon>edit</Icon>
-                </Button>
-                <Button
-                  theme="error"
-                  variant="text"
-                  onClick={() => {
-                    mutateDelete(undefined, {
-                      onSuccess: () =>
-                        queryClient.refetchQueries(["articles"], {
-                          stale: true,
-                          exact: true,
-                        }),
-                    });
-                  }}
-                >
-                  <Icon>delete</Icon>
-                </Button>
+    <>
+      <Col size={12}>
+        <Card size="large" collapsible collapsed>
+          <Card.Header bordered>
+            <Space align="center" justify="space-between">
+              <div>
+                <small>
+                  <b>
+                    {isAuthorLoading ? (
+                      <Loader.Inline children="" />
+                    ) : author ? (
+                      author.name
+                    ) : (
+                      ""
+                    )}
+                  </b>{" "}
+                  <small>{data.dateCreated.toDateString()}</small>
+                </small>
+                <h3>{data.title}</h3>
               </div>
-            ) : (
-              ""
-            )}
-          </div>
-          <HSpace amount={1} />
-          <hr />
-          <VSpace amount={1} />
-          <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-            {data.content}
-          </pre>
-          {isDeletingPending ? <Loader /> : ""}
-          {hasDeletingError ? (
-            <Alert severity="error">Error deleting the article</Alert>
+              {fromAdmin ? (
+                <div className="nowrap">
+                  <Button type="text" icon="edit" onClick={onEdit}></Button>
+                  {isDeletePending ? (
+                    <Button type="text">
+                      <Loader.Inline children="" />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="text"
+                      icon="error"
+                      onClick={() => {
+                        mutateDelete(undefined, {
+                          onSuccess: () =>
+                            queryClient.refetchQueries(["articles"], {
+                              active: true,
+                              stale: true,
+                              exact: true,
+                            }),
+                        });
+                      }}
+                    ></Button>
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
+            </Space>
+          </Card.Header>
+
+          <Card.Body>
+            <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+              {data.content}
+            </pre>
+          </Card.Body>
+          {hasDeleteError ? (
+            <Card.Footer>
+              <Alert type="error">Error deleting the article</Alert>
+            </Card.Footer>
           ) : (
             ""
           )}
-        </PaddingXY>
-      </Surface>
-    </Container>
+        </Card>
+      </Col>
+    </>
   );
 }

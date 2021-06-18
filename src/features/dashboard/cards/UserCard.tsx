@@ -1,82 +1,91 @@
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 
-import { User } from "types";
 import {
-  PaddingXY,
-  Surface,
-  Container,
-  Button,
-  Icon,
+  Col,
+  Card,
+  Space,
   Loader,
+  Button,
   Alert,
-} from "components/common";
+  AvatarInline,
+} from "ebs-design";
+
 import { CardProps } from "../types";
 import { useContext } from "react";
-import { UserContext } from "../../../contexts/UserContext";
+import { UserContext } from "contexts/UserContext";
 import { deleteUser } from "api";
+import { User } from "types";
 
 export function UserCard({ data, onEdit }: CardProps<User>) {
   const fromAdmin = useContext(UserContext).user?.permission == "admin";
   const {
-    isLoading: isDeletingPending,
-    isError: hasDeletingError,
+    isLoading: isDeletePending,
+    isError: hasDeleteError,
     mutate: mutateDelete,
   } = useMutation(() => deleteUser(data.id), {});
   const queryClient = useQueryClient();
 
   return (
-    <Container size="s" fixed>
-      <Surface elevation={2}>
-        <PaddingXY x={2} y={1}>
-          <div className="flex align-center space-between">
-            <div>
+    <>
+      <Col size={12}>
+        <Card size="small">
+          <Card.Body>
+            <Space align="center" justify="space-between">
               <div>
-                <span className="bold">{data.name}</span> -{" "}
-                <span className="small">{data.permission}</span>
+                <AvatarInline
+                  alt={data.name}
+                  status="active"
+                  description={data.email + " - " + data.permission}
+                />
+
+                {fromAdmin ? (
+                  <small>
+                    <b>Password: </b>
+                    {data.password}
+                  </small>
+                ) : (
+                  ""
+                )}
               </div>
-              <div className="text-gray small bold">{data.email}</div>
               {fromAdmin ? (
-                <div className="small">
-                  Password: <span className="text-gray">{data.password}</span>
+                <div className="nowrap">
+                  <Button type="text" icon="edit" onClick={onEdit}></Button>
+                  {isDeletePending ? (
+                    <Button type="text">
+                      <Loader.Inline children="" />
+                    </Button>
+                  ) : (
+                    <Button
+                      type="text"
+                      icon="error"
+                      onClick={() => {
+                        mutateDelete(undefined, {
+                          onSuccess: () =>
+                            queryClient.refetchQueries(["users"], {
+                              active: true,
+                              stale: true,
+                              exact: true,
+                            }),
+                        });
+                      }}
+                    ></Button>
+                  )}
                 </div>
               ) : (
                 ""
               )}
-            </div>
-            {fromAdmin ? (
-              <div className="nowrap">
-                <Button theme="info" variant="text" onClick={onEdit}>
-                  <Icon>edit</Icon>
-                </Button>
-                <Button
-                  theme="error"
-                  variant="text"
-                  onClick={() => {
-                    mutateDelete(undefined, {
-                      onSuccess: () =>
-                        queryClient.refetchQueries(["users"], {
-                          stale: true,
-                          exact: true,
-                        }),
-                    });
-                  }}
-                >
-                  <Icon>delete</Icon>
-                </Button>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-          {isDeletingPending ? <Loader /> : ""}
-          {hasDeletingError ? (
-            <Alert severity="error">Error deleting the user</Alert>
+            </Space>
+          </Card.Body>
+          {hasDeleteError ? (
+            <Card.Footer>
+              <Alert type="error">Error deleting the user</Alert>
+            </Card.Footer>
           ) : (
             ""
           )}
-        </PaddingXY>
-      </Surface>
-    </Container>
+        </Card>
+      </Col>
+    </>
   );
 }

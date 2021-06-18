@@ -1,73 +1,51 @@
 import React from "react";
 
-import { VSpace, Modal, Container, PaddingXY } from "components/common";
-import { TextField } from "components/text-field";
+import { Modal, Form, Input, Calendar, Textarea, DatePicker } from "ebs-design";
+
 import { Article } from "types";
 import { ModalFormProps } from "./types";
-import { dateToInputFormat } from "utils";
 
 export interface ArticleModalProps extends ModalFormProps<Article> {
   hasDate?: boolean;
 }
 export function ArticleModal({
-  data,
-  setData,
-  top,
+  form,
+  title,
   bottom,
   hasDate = false,
-  ...modalProps
+  open,
+  onClose,
 }: ArticleModalProps) {
-  return (
-    <Modal {...modalProps}>
-      <Container size="m" fixed>
-        <PaddingXY x={4} y={3}>
-          {top}
-          <VSpace amount={2} />
-          <TextField
-            variant="outlined"
-            value={data?.title}
-            type="text"
-            onInput={(title) => setData((a) => ({ ...a!, title }))}
-            label="Title"
-          />
-          <VSpace amount={1} />
+  return open ? (
+    <Modal title={title} onClose={onClose}>
+      <Modal.Content>
+        <Form form={form}>
+          <Form.Field name="title" label="Title" rules={[{ required: true }]}>
+            <Input />
+          </Form.Field>
           {hasDate ? (
-            <>
-              <TextField
-                variant="outlined"
-                value={dateToInputFormat(data?.dateCreated)}
-                type="date"
-                onInput={(date) =>
-                  setData((a) => ({
-                    ...a!,
-                    dateCreated: new Date(date),
-                  }))
-                }
-                label="Date created"
-              />
-              <VSpace amount={1} />
-            </>
+            <Form.Field
+              name="dateCreated"
+              label="Date"
+              rules={[{ required: true }]}
+            >
+              <DatePicker />
+            </Form.Field>
           ) : (
             ""
           )}
-
-          <TextField
-            variant="outlined"
-            value={data?.content}
-            type="text"
-            multiline
-            onInput={(content) =>
-              setData((a) => ({
-                ...a!,
-                content,
-              }))
-            }
+          <Form.Field
+            name="content"
             label="Content"
-          />
-          <VSpace amount={1} />
-          {bottom}
-        </PaddingXY>
-      </Container>
+            rules={[{ required: true }]}
+          >
+            <Textarea />
+          </Form.Field>
+        </Form>
+      </Modal.Content>
+      <Modal.Footer>{bottom}</Modal.Footer>
     </Modal>
+  ) : (
+    <></>
   );
 }

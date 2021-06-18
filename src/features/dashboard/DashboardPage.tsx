@@ -1,70 +1,73 @@
-import React, { useState, useContext } from "react";
-
+import React, { useContext } from "react";
 import {
-  Container,
-  Icon,
-  PaddingXY,
-  SelectList,
-  VSpace,
-  Button,
-  HSpace,
-} from "components/common";
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+  Link,
+  useParams,
+} from "react-router-dom";
+
+import { AvatarInline, Sidebar, Icon, Button, Layout } from "ebs-design";
 
 import { UserContext } from "contexts/UserContext";
 import { UserTab, ArticleTab } from "./tabs";
 
 export function DashboardPage() {
-  const [selected, setSelected] = useState("articles");
-
   const { user, logout } = useContext(UserContext);
+  const {
+    location: { pathname },
+  } = useHistory();
 
   return (
-    <div className="full-vh flex">
-      <div className="side-bar">
-        <Container size={300} fixed>
-          <PaddingXY x={1} y={2}>
-            <div className="flex space-between">
-              <div>
-                <div className="bold">{user!.name}</div>
-                <div className="text-gray small bold">{user!.email}</div>
-              </div>
-              <Button variant="text" onClick={logout}>
-                <Icon>logout</Icon>
-              </Button>
-            </div>
-          </PaddingXY>
-          <hr />
-          <VSpace amount={3} />
-          <PaddingXY x={1} y={0}>
-            <div className="title">Dashboard</div>
-          </PaddingXY>
-          <VSpace amount={1} />
-          <SelectList
-            theme="success"
-            items={[
-              ["users", "Users", "person"],
-              ["articles", "Articles", "article"],
-            ].map((i) => ({
-              key: i[0],
-              value: (
-                <div className="flex space-between">
-                  {i[1]} <Icon>{i[2]}</Icon>
-                </div>
-              ),
-            }))}
-            selected={selected}
-            onSelect={setSelected}
-          />
-        </Container>
-      </div>
-      <HSpace amount={15} />
-      <div>
-        <VSpace amount={3} />
-        <div>
-          {selected == "users" ? <UserTab /> : <ArticleTab />}
-          <VSpace amount={1} />
-        </div>
-      </div>
-    </div>
+    <>
+      <Layout>
+        <Layout.Topbar>
+          <Layout.Topbar.Title>Dashboard</Layout.Topbar.Title>
+          <Layout.Topbar.LeftSide>
+            <AvatarInline
+              alt={user!.name}
+              status="active"
+              description={user!.email}
+            />
+          </Layout.Topbar.LeftSide>
+
+          <Layout.Topbar.RightSide>
+            <Button onClick={logout}>Logout</Button>
+          </Layout.Topbar.RightSide>
+        </Layout.Topbar>
+
+        <Sidebar>
+          <Sidebar.TopMenu>
+            <Link to="/dashboard/articles">
+              <Sidebar.Item
+                prefix={<Icon type="globe" />}
+                text="Articles"
+                active={pathname == "/dashboard/articles"}
+              />
+            </Link>
+            <Link to="/dashboard/users">
+              <Sidebar.Item
+                prefix={<Icon type="users" />}
+                text="Users"
+                active={pathname == "/dashboard/users"}
+              />
+            </Link>
+          </Sidebar.TopMenu>
+        </Sidebar>
+
+        <Layout.Content>
+          <Switch>
+            <Route path="/dashboard/users">
+              <UserTab />
+            </Route>
+            <Route path="/dashboard/articles">
+              <ArticleTab />
+            </Route>
+            <Redirect to="/dashboard/articles" />
+          </Switch>
+        </Layout.Content>
+      </Layout>
+    </>
   );
 }

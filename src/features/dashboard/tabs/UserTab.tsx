@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 
-import { emptyUser, User } from "types";
+import { Alert, Row, Button, Col, Loader, useForm } from "ebs-design";
+
+import { User } from "types";
 import { getAllUsers, registerUser, updateUser } from "api";
 import { UserCard } from "../cards";
-import { insertBetween } from "utils";
-import { VSpace, HSpace, Icon, Button, Alert, Loader } from "components/common";
 import { UserModal } from "../modals";
 import { useContext } from "react";
 import { UserContext } from "contexts/UserContext";
@@ -31,118 +31,125 @@ export function UserTab() {
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [newModalOpen, setNewModalOpen] = useState(false);
+
+  const [newUserForm] = useForm<User>();
+  const [editUserForm] = useForm<User>();
+
   const [editingUser, setEditingUser] = useState<User>();
-  const [newUser, setNewUser] = useState<User | undefined>(emptyUser());
 
   return (
     <div>
       {hasUsersError ? (
-        <Alert severity="error">Error loading users</Alert>
+        <Alert type="error">Error loading users</Alert>
       ) : !isUsersLoading ? (
         <>
-          {insertBetween(
-            users?.map((u) => (
+          <Row gy={3}>
+            {users?.map((u) => (
               <UserCard
                 key={u.id}
                 data={u}
                 onEdit={() => {
                   setEditingUser(u);
+                  editUserForm.setFieldsValue(u);
                   setEditModalOpen(true);
                 }}
               />
-            )) || [],
-            <VSpace amount={1} />
-          )}
-          <VSpace amount={1} />
-          {fromAdmin ? (
-            <>
-              <Button onClick={() => setNewModalOpen(true)}>
-                New user
-                <HSpace amount={1} />
-                <Icon>add</Icon>
-              </Button>
-              <VSpace amount={1} />
-            </>
-          ) : (
-            ""
-          )}
+            ))}
+            {fromAdmin ? (
+              <>
+                <Col size={12}>
+                  <Button onClick={() => setNewModalOpen(true)}>
+                    New user
+                  </Button>
+                </Col>
+              </>
+            ) : (
+              ""
+            )}
+          </Row>
         </>
       ) : (
-        <Loader />
+        <Loader loading />
       )}
       <UserModal
+        form={editUserForm}
         open={editModalOpen}
         onClose={() => setEditModalOpen(false)}
-        top={<div className="title">Edit user</div>}
+        title="Edit user"
         bottom={
           <>
-            <div className="flex space-between align-center">
+            <div>
               <Button
                 disabled={isEditingPending}
                 onClick={async () => {
-                  mutateUser(editingUser!, {
-                    onSuccess: () => {
-                      refetch();
-                      setEditModalOpen(false);
-                    },
-                  });
+                  if (fromAdmin) {
+                    try {
+                      await editUserForm.validateFields();
+                      mutateUser(
+                        { ...editingUser, ...editUserForm.getFieldsValue() },
+                        {
+                          onSuccess: () => {
+                            refetch();
+                            setEditModalOpen(false);
+                          },
+                        }
+                      );
+                    } catch (e) {}
+                  }
                 }}
               >
                 Save
-                <HSpace amount={1} />
-                <Icon>save</Icon>
+                {isEditingPending ? <Loader.Inline children="" /> : ""}
               </Button>
-              {isEditingPending ? <Loader /> : ""}
             </div>
+
             {hasEditingError ? (
               <>
-                <VSpace amount={1} />
-                <Alert severity="error">Error saving the user</Alert>
+                <Alert type="error">Error saving the user</Alert>
               </>
             ) : (
               ""
             )}
           </>
         }
-        data={editingUser}
-        setData={setEditingUser}
       />
       <UserModal
+        checkEmailExists
+        form={newUserForm}
         open={newModalOpen}
         onClose={() => setNewModalOpen(false)}
-        top={<div className="title">New user</div>}
+        title="New user"
         bottom={
           <>
-            <div className="flex space-between align-center">
+            <div>
               <Button
                 disabled={isNewUserPending}
                 onClick={async () => {
-                  mutateNewUser(newUser!, {
-                    onSuccess: () => {
-                      refetch();
-                      setNewModalOpen(false);
-                    },
-                  });
+                  try {
+                    await newUserForm.validateFields();
+                    mutateNewUser(newUserForm.getFieldsValue(), {
+                      onSuccess: () => {
+                        refetch();
+                        setNewModalOpen(false);
+                        newUserForm.resetFields();
+                      },
+                    });
+                  } catch (e) {}
                 }}
               >
                 Add
-                <HSpace amount={1} />
-                <Icon>add</Icon>
+                {isNewUserPending ? <Loader.Inline children="" /> : ""}
               </Button>
-              {isNewUserPending ? <Loader /> : ""}
             </div>
             {hasNewUserError ? (
               <>
-                <VSpace amount={1} />
-                <Alert severity="error">Error adding the user</Alert>
+                <Alert type="error">Error adding the user</Alert>
               </>
             ) : (
               ""
             )}
           </>
         }
-        data={newUser}
-        setData={setNewUser}
       />
     </div>
   );

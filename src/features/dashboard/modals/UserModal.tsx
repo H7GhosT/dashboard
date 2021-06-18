@@ -1,70 +1,66 @@
 import React from "react";
 
-import { VSpace, Modal, Container, PaddingXY } from "components/common";
-import {
-  TextField,
-  PasswordTextField,
-  SelectTextField,
-} from "components/text-field";
+import { Modal, Form, Input, InputSelect } from "ebs-design";
+
 import { User, UserPermission } from "types";
 import { ModalFormProps } from "./types";
+import { emailExistsValidator, emailValidator } from "rc-form-validators";
+
+export interface UserModalFormProps extends ModalFormProps<User> {
+  checkEmailExists?: boolean;
+}
 
 export function UserModal({
-  data,
-  setData,
-  top,
+  title,
+  form,
   bottom,
-  ...modalProps
-}: ModalFormProps<User>) {
-  return (
-    <Modal {...modalProps}>
-      <Container size="s" fixed>
-        <PaddingXY x={4} y={3}>
-          {top}
-          <VSpace amount={2} />
-          <SelectTextField
+  onClose,
+  open,
+  checkEmailExists = false,
+}: UserModalFormProps) {
+  return open ? (
+    <Modal title={title} onClose={onClose}>
+      <Modal.Content>
+        <Form form={form}>
+          <Form.Field
+            initialValue="user"
+            name="permission"
             label="Permission"
-            selected={data?.permission || ""}
-            items={[
-              { key: "admin", value: "Admin" },
-              { key: "user", value: "User" },
-            ]}
-            onSelect={(v) =>
-              setData((u) => ({
-                ...u!,
-                permission: v as UserPermission,
-              }))
-            }
-            variant="outlined"
-          />
-          <VSpace amount={1} />
-          <TextField
-            value={data?.email}
-            type="email"
-            onInput={(email) => setData((u) => ({ ...u!, email }))}
-            variant="outlined"
+            rules={[{ required: true }]}
+          >
+            <InputSelect
+              options={[
+                { text: "Admin", value: "admin" },
+                { text: "User", value: "user" },
+              ]}
+            />
+          </Form.Field>
+          <Form.Field name="name" label="Name" rules={[{ required: true }]}>
+            <Input />
+          </Form.Field>
+          <Form.Field
+            name="email"
             label="Email"
-          />
-          <VSpace amount={1} />
-          <TextField
-            value={data?.name}
-            type="text"
-            onInput={(name) => setData((u) => ({ ...u!, name }))}
-            variant="outlined"
-            label="Name"
-          />
-          <VSpace amount={1} />
-          <PasswordTextField
-            value={data?.password}
-            onInput={(password) => setData((u) => ({ ...u!, password }))}
-            variant="outlined"
+            rules={[
+              { required: true },
+              { validator: emailValidator },
+              checkEmailExists ? { validator: emailExistsValidator } : {},
+            ]}
+          >
+            <Input type="email" />
+          </Form.Field>
+          <Form.Field
+            name="password"
             label="Password"
-          />
-          <VSpace amount={1} />
-
-          {bottom}
-        </PaddingXY>
-      </Container>
+            rules={[{ required: true }]}
+          >
+            <Input type="password" />
+          </Form.Field>
+        </Form>
+      </Modal.Content>
+      <Modal.Footer>{bottom}</Modal.Footer>
     </Modal>
+  ) : (
+    <></>
   );
 }

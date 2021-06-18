@@ -11,8 +11,11 @@ export function PageSwitch() {
   return user ? (
     <Switch>
       <Route path="/dashboard">
-        <DashboardPage />
+        <Switch>
+          <DashboardPage />
+        </Switch>
       </Route>
+
       <Redirect to="/dashboard" />
     </Switch>
   ) : (

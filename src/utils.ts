@@ -18,3 +18,6 @@ export function dateToInputFormat(date?: Date) {
   const s = year + "-" + month + "-" + day;
   return s;
 }
+
+export const delay = (time: number) =>
+  new Promise((r) => setTimeout(() => r(undefined), time));
