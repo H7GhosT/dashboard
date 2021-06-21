@@ -11,4 +11,5 @@ export {
   updateArticle,
   deleteArticle,
   addArticle,
+  getArticleBy,
 } from "./articles";

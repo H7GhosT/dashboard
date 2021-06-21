@@ -29,7 +29,11 @@ export async function deleteArticle(id: string) {
   });
 }
 
-export async function addArticle({ title, content, authorId }: Article) {
+export async function addArticle({
+  title,
+  content,
+  authorId,
+}: Article): Promise<Article> {
   const response = await fetch(SERVER_URL + "/articles", {
     method: "POST",
     body: JSON.stringify({
@@ -44,4 +48,12 @@ export async function addArticle({ title, content, authorId }: Article) {
     },
   });
   return await response.json();
+}
+
+export async function getArticleBy(what: string, value: string) {
+  const response = await fetch(SERVER_URL + "/articles?" + what + "=" + value);
+  const data: Article[] = await response.json();
+  return data.length
+    ? { ...data[0], dateCreated: new Date(data[0].dateCreated) }
+    : null;
 }

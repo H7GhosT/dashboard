@@ -1,26 +1,42 @@
 import React, { useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { Link } from "react-router-dom";
 
-import { Card, Space, Button, Loader,  Col, Alert } from "ebs-design";
+import { Card, Space, Button, Loader, Col, Alert } from "ebs-design";
 
 import { Article, User } from "types";
-import { deleteArticle, getAllUsers, getUserBy } from "api";
+import { deleteArticle, getUserBy } from "api";
 import { CardProps } from "../types";
 import { UserContext } from "contexts/UserContext";
 
-export function ArticleCard({ data, onEdit }: CardProps<Article>) {
+export function ArticleCard({ data, onEdit, afterDelete }: CardProps<Article>) {
+  const queryClient = useQueryClient();
+  const fromAdmin = useContext(UserContext).user?.permission == "admin";
+
   const { data: author, isLoading: isAuthorLoading } = useQuery<User | null>(
     ["users", data.authorId],
     () => getUserBy("id", data.authorId),
     {}
   );
-  const fromAdmin = useContext(UserContext).user?.permission == "admin";
+
   const {
     isLoading: isDeletePending,
     isError: hasDeleteError,
     mutate: mutateDelete,
   } = useMutation(() => deleteArticle(data.id), {});
-  const queryClient = useQueryClient();
+
+  const deleteHandler = () => {
+    mutateDelete(undefined, {
+      onSuccess: () => {
+        afterDelete && afterDelete();
+        queryClient.refetchQueries(["articles"], {
+          active: true,
+          stale: true,
+          exact: true,
+        });
+      },
+    });
+  };
 
   return (
     <>
@@ -43,33 +59,29 @@ export function ArticleCard({ data, onEdit }: CardProps<Article>) {
                 </small>
                 <h3>{data.title}</h3>
               </div>
-              {fromAdmin ? (
-                <div className="nowrap">
-                  <Button type="text" icon="edit" onClick={onEdit}></Button>
-                  {isDeletePending ? (
-                    <Button type="text">
-                      <Loader.Inline children="" />
-                    </Button>
-                  ) : (
-                    <Button
-                      type="text"
-                      icon="error"
-                      onClick={() => {
-                        mutateDelete(undefined, {
-                          onSuccess: () =>
-                            queryClient.refetchQueries(["articles"], {
-                              active: true,
-                              stale: true,
-                              exact: true,
-                            }),
-                        });
-                      }}
-                    ></Button>
-                  )}
-                </div>
-              ) : (
-                ""
-              )}
+              <div className="nowrap">
+                <Link to={"/dashboard/articles/" + data.id}>
+                  <Button type="text" icon="eye"></Button>
+                </Link>
+                {fromAdmin && (
+                  <>
+                    <Link to={"/dashboard/articles/" + data.id + "/edit"}>
+                      <Button type="text" icon="edit"></Button>
+                    </Link>
+                    {isDeletePending ? (
+                      <Button type="text">
+                        <Loader.Inline children="" />
+                      </Button>
+                    ) : (
+                      <Button
+                        type="text"
+                        icon="error"
+                        onClick={deleteHandler}
+                      ></Button>
+                    )}
+                  </>
+                )}
+              </div>
             </Space>
           </Card.Header>
 

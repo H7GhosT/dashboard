@@ -37,6 +37,36 @@ export function UserTab() {
 
   const [editingUser, setEditingUser] = useState<User>();
 
+  const editHandler = async () => {
+    if (fromAdmin) {
+      try {
+        await editUserForm.validateFields();
+        mutateUser(
+          { ...editingUser, ...editUserForm.getFieldsValue() },
+          {
+            onSuccess: () => {
+              refetch();
+              setEditModalOpen(false);
+            },
+          }
+        );
+      } catch (e) {}
+    }
+  };
+
+  const newHandler = async () => {
+    try {
+      await newUserForm.validateFields();
+      mutateNewUser(newUserForm.getFieldsValue(), {
+        onSuccess: () => {
+          refetch();
+          setNewModalOpen(false);
+          newUserForm.resetFields();
+        },
+      });
+    } catch (e) {}
+  };
+
   return (
     <div>
       {hasUsersError ? (
@@ -79,25 +109,7 @@ export function UserTab() {
         bottom={
           <>
             <div>
-              <Button
-                disabled={isEditingPending}
-                onClick={async () => {
-                  if (fromAdmin) {
-                    try {
-                      await editUserForm.validateFields();
-                      mutateUser(
-                        { ...editingUser, ...editUserForm.getFieldsValue() },
-                        {
-                          onSuccess: () => {
-                            refetch();
-                            setEditModalOpen(false);
-                          },
-                        }
-                      );
-                    } catch (e) {}
-                  }
-                }}
-              >
+              <Button disabled={isEditingPending} onClick={editHandler}>
                 Save
                 {isEditingPending ? <Loader.Inline children="" /> : ""}
               </Button>
@@ -122,21 +134,7 @@ export function UserTab() {
         bottom={
           <>
             <div>
-              <Button
-                disabled={isNewUserPending}
-                onClick={async () => {
-                  try {
-                    await newUserForm.validateFields();
-                    mutateNewUser(newUserForm.getFieldsValue(), {
-                      onSuccess: () => {
-                        refetch();
-                        setNewModalOpen(false);
-                        newUserForm.resetFields();
-                      },
-                    });
-                  } catch (e) {}
-                }}
-              >
+              <Button disabled={isNewUserPending} onClick={newHandler}>
                 Add
                 {isNewUserPending ? <Loader.Inline children="" /> : ""}
               </Button>
